@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+
+
+<h1>Cancellation Successful</h1>
+<div class="container">
+    <p><strong>Booking Cancellation:</strong> {{ message.booking_no }}</p>
+    <p><strong>Response Cancelations:</strong> {{ message.advisory_message }}</p>
+    <p><strong>Booking Status:</strong> {{ message.booking_status }}</p>
+    <p><strong>Total Payments Received:</strong> {{ message.total_payments_received }}</p>
+    <p><strong>Gross Balance:</strong> {{ message.gross_balance_due }}</p>
+    <p><strong>Net Balance:</strong> {{ message.net_balance_due }}</p>
+</div>
+
+
+{% endblock %}
+
+

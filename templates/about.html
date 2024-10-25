@@ -1,0 +1,152 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+.image-section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    position: relative;
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+
+
+
+
+.card-container {
+    position: relative;
+    z-index: 2;
+}
+
+
+.card-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.employee-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    width: 250px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+    min-height: 350px;
+    margin-top: 1px !important;
+}
+
+.employee-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5%;
+}
+
+.employee-card h3 {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.employee-card:hover {
+    transform: translateY(-10px);
+}
+
+</style>
+
+
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row justify-content-center py-5">
+                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                       <div class="position-relative w-75 mx-auto animated slideInDown">
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
+                    <div class="position-relative h-100">
+                        <img class="img-fluid position-absolute w-100 h-100" src="{% static 'img/ocean.jpg' %}" alt="" style="object-fit: cover; border-radius:10%">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
+                    <h1 class="mb-4">Welcome to <span class="text-primary">That Vacation</span></h1>
+                    <p class="mb-4">We are a company with over 10 years of experience in the tourism sector, making every trip an unforgettable experience.</p>
+                    <p class="mb-4">We provide safety, trust, and the best prices. Our team of specialists is highly trained in tourism activities,
+                    which distinguishes and makes us proud.
+                    We will be able to address all your questions and concerns until you feel satisfied and aligned with your travel plan.
+                    With That Vacation, you are not just another customer; we are part of your idea and turn it into a reality.
+                    </p>
+                    <div class="row gy-2 gx-4 mb-4">
+                        <div class="col-sm-6">
+                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>First Class Travel</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Carefully Selected Destinations</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>5-Star Accommodations</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Cruise Trips</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Over 150 Tourist Destinations</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Personalized Services</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="image-section">
+        <div style="padding-top: 45px;" class="card-container">
+        {% if employed %}
+            {% for emp in employed %}
+                <div class="employee-card" style="position: relative; padding-bottom: 20px;">
+                    <br>
+                    <img style="padding-top: 1px;" src="{{ emp.image.url }}" alt="{{ emp.first_name }} {{ emp.last_name }}">
+                    <h4 style="text-align: left">{{ emp.first_name }} {{ emp.last_name }}</h4>
+                    <h6 style="text-align: left">{{ emp.charge }}</h6>
+                    <a href="{% url 'detail_employed' emp.id %}" style="font-size: 12px; position: absolute; bottom: 0; left: 15px;"><h6>Learn More</h6></a>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+        </div>
+    </section>
+
+
+
+
+
+
+
+{% endblock %}
+</body>
+
+</html>

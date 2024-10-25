@@ -1,0 +1,79 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row justify-content-center py-5">
+                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                       <div class="position-relative w-75 mx-auto animated slideInDown">
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Ofertas Especiales</h6>
+            {% if ofertas %}
+            <h1 class="mb-5">Oportunidad única</h1>
+            {% else %}
+            <h1 class="mb-5">No hay ofertas disponibles</h1>
+            {% endif %}
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for oferta in ofertas %}
+            <div class="col">
+                <div class="package-item">
+                    <div class="overflow-hidden">
+                        <h6 class="section-title bg-white text-center text-dark px-3">{{oferta.nombre}}</h6>
+                        <img style="max-height: 200px; width: 100%; height:100%; " class="img-fluid" src="{{ oferta.imagen.url }}" alt="{{ oferta.nombre }}">
+                    </div>
+                    <div class="d-flex border-bottom">
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ oferta.itinerario }}</small>
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>{{ oferta.duracion }} days</small>
+                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>1 Person</small>
+                    </div>
+                    <div class="text-center p-4">
+                        <h3 class="mb-0">Desde: ${{ oferta.precio }}</h3>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                        </div>
+                            <p class="border-bottom">
+                                Fecha de partida: {{ oferta.fecha_partida }}<br>
+                                Fecha de Regreso: {{ oferta.fecha_regreso }}<br>
+                                {% if oferta.prestaciones_incluidas.all %}
+                                <h5 class="mb-0">Incluido en la oferta</h5>
+                                <br>
+                                <ul>
+                                    {% for prestacion in oferta.prestaciones_incluidas.all %}
+                                    <li style="text-align: left;">{{ prestacion.nombre }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </p>
+                        <div class="d-flex justify-content-center mb-2">
+                            <a style="display:none;" href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
+                            <a href="{% url 'booking' oferta.nombre oferta.id %}" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Booking Request</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+  <center>
+    <a href="javascript:history.back()" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Volver</a>
+    </center>
+
+{% endblock %}
+</body>
+
+</html>

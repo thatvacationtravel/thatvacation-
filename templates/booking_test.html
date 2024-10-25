@@ -1,0 +1,233 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .header img {
+        max-width: 150px;
+    }
+    .details {
+        margin-bottom: 20px;
+    }
+    .details h2 {
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+    .details p {
+        margin: 0;
+    }
+    .section {
+        margin-bottom: 20px;
+    }
+    .section h3 {
+        background: #eee;
+        padding: 10px;
+        margin: 0;
+        border-bottom: 1px solid #ddd;
+        font-size: 1.1em;
+    }
+    .section .content {
+        padding: 10px;
+    }
+    .content p {
+        margin: 5px 0;
+    }
+    .itinerary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .itinerary-table th, .itinerary-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    .itinerary-table th {
+        background: #f2f2f2;
+        text-align: left;
+    }
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    .table th {
+        background: #f2f2f2;
+        text-align: left;
+    }
+</style>
+
+<div class="container">
+    <div class="header">
+        <img src="{% static 'images/logos/logoMSC.png' %}" alt="MSC Cruises">
+
+        <p>Booking number: <strong>{{ booking_no }}</strong></p>
+    </div>
+
+    <div class="details">
+        <h2>Booking Details</h2>
+        <p><strong>Booking status:</strong> Option expiring: {{ booking_expiry }}</p>
+        <p><strong>Total passengers:</strong> {{ total_travelers }}</p>
+        <p><strong>Booking Date:</strong> {{ current_datetime }}</p>
+        <p><strong>Ship:</strong> {{ crucero.shipName }}</p>
+        <p><strong>Destination:</strong> {{ crucero.itinDesc }}</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="section">
+                <h3>Guest(s)</h3>
+                <div class="content">
+                    {% for passenger in passenger_data %}
+                        <p>{{ forloop.counter }} {{ passenger.last_name|capfirst }}, {{ passenger.first_name|capfirst }} <span style="font-size:12px;">(DOB: {{ passenger.date_of_birth }})</span></p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="section">
+                <h3>Booking details:</h3>
+                <div class="content">
+                    <p style="font-size:14px;"><strong>Disembarkation Date:</strong> {{ crucero.sailingDate }}</p>
+                    <p style="font-size:14px;"><strong>Disembarkation Port:</strong> {{ desembarkation_port }}</p>
+                    <p style="font-size:14px;"><strong>Embarkation Date:</strong> {{ returnDate }}</p>
+                    <p style="font-size:14px;"><strong>Embarkation Port:</strong> {{ embarkation_port }}</p>
+                    <p style="font-size:14px;"><strong>Stateroom:</strong> {{ cabin_number }}</p>
+
+                    {% for category, cabins in cabin_categories.items %}
+                        <p><strong>Category:</strong> {{ category }}</p>
+                    {% endfor %}
+                    <p style="font-size:14px;"><strong>Your experience:</strong> {{ crucero.fareDesc }}{{category_code}}</p>
+                    <p style="font-size:14px;"><strong>Itinerary:</strong> {{ crucero.itinDesc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Payment Details</h3>
+        <div class="content">
+            <p><strong>Payment Method:</strong> {{ metodo_pago }}</p>
+            <p><strong>Currency Code:</strong> {{ moneda }}</p>
+            <p><strong>Total Amount Due:</strong> {{ booking_charges }}</p>
+            <p><strong>Deposit:</strong> {{ deposit_amount_due }}</p>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Passenger</th>
+                        <th>Charge Type</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for person_no, data in charge_details.items %}
+                        <tr>
+                            <td rowspan="2"><i class="fas fa-user user-icon"></i>&nbsp;{{ person_no }}</td>
+                            <td>CAB</td>  <!-- Hardcoding "CAB" as the charge type -->
+                            <td>Standard Cabin Charge</td>  <!-- Hardcoding the description -->
+                            <td>{{ additional_charges_sum }}</td>  <!-- Using additional_charges_sum as the amount -->
+                        </tr>
+                        {% for detail in data.details %}
+                            {% if detail.type == 'PCH' %}
+                                <tr>
+                                    <td>{{ detail.type }}</td>
+                                    <td>{{ detail.desc }}</td>
+                                    <td>{{ detail.amount }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        <tr>
+                            <td colspan="3"><strong>Total Passenger</strong></td>
+                            <td><strong>{{ data.total }}</strong></td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="3"><strong>Total to pay</strong></td>
+                        <td><strong>{{ booking_charges }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong>Deposit</strong></td>
+                        <td><strong>{{ deposit_amount_due }}</strong></td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Detailed Payment Information</h3>
+        <div class="content">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>&nbsp;</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Final Payments</td>
+                        <td>Due within {{ final_payment_date }}</td>
+                        <td>{{ booking_charges }}</td>
+                    </tr>
+                    <tr>
+                        <td>DEPOSIT -- CRU</td>
+                        <td>Due within {{ deposit_due_date }}</td>
+                        <td>{{ deposit_amount_due }}</td>
+                    </tr>
+                    <tr>
+                        <td>Payments</td>
+                        <td>&nbsp;</td>
+                        <td>{{ total_payments_received }}</td>
+                    </tr>
+                    <tr>
+                        <td>Balance</td>
+                        <td>&nbsp;</td>
+                        <td>{{ booking_charges }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <p>*Arrival and departure timings might differ from those indicated. For worry-free cruising we recommend booking your transfers and excursions with MSC which guarantees adaptation to the ship's schedule.</p>
+    </div>
+
+    <div class="section">
+        <p>Thank you for booking! You can start planning your onboard experience and shore excursions at MSC Cruises.</p>
+    </div>
+
+    <div class="section">
+        <h3>Payment Form</h3>
+
+        <a href="{% url 'process_payment1' booking_no=booking_no total=booking_charges %}" class="btn btn-primary">Proceed to Payment</a>
+        <a href="{{ download_invoice_url }}" class="btn btn-primary" target="_blank">Download Invoice</a>
+    </div>
+</div>
+
+
+<div><pre>{{ passenger_data_json|safe }}</pre></div>
+<div style="">{{ response_content }}</div>
+{% endblock %}
+

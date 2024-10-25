@@ -1,0 +1,697 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<head>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+
+<style>
+    .form-check-label {
+        margin-left: .5rem;
+    }
+    .form-check-input {
+        vertical-align: middle;
+    }
+
+    .label{
+    display: block !important;
+}
+    /* Otros estilos personalizados que necesites */
+</style>
+</head>
+
+
+<body>
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+    <!-- Contenido adicional si es necesario -->
+</div>
+<center>
+    <div class="col-md-6">
+        <h1 class="text-green mb-4">Agency Register</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+    {% csrf_token %}
+    <div class="row g-3">
+        <div class="form-group">
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+                <div class="text-danger">{{ form.first_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.agency }}
+            {% if form.agency.errors %}
+                <div class="text-danger">{{ form.agency.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="text-danger">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="text-danger">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.phone }}
+            {% if form.phone.errors %}
+                <div class="text-danger">{{ form.phone.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.estado }}
+            {% if form.estado.errors %}
+                <div class="text-danger">{{ form.estado.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.direccion }}
+            {% if form.direccion.errors %}
+                <div class="text-danger">{{ form.direccion.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.zipcode }}
+            {% if form.zipcode.errors %}
+                <div class="text-danger">{{ form.zipcode.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.iata_clia }}
+            {% if form.iata_clia.errors %}
+                <div class="text-danger">{{ form.iata_clia.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-floating mb-3">
+            {{ form.role }}
+            {% if form.role.errors %}
+                <div class="text-danger">{{ form.role.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.pais }}
+            {% if form.pais.errors %}
+                <div class="text-danger">{{ form.pais.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.terminos_condiciones }}
+            <label for="{{ form.terminos_condiciones.id_for_label }}" class="form-check-label">Acepto los</label><a href="#" data-toggle="modal" data-target="#termsModal">&nbsp;Terms & Conditions</a>
+            {% if form.terminos_condiciones.errors %}
+                <div class="text-danger">{{ form.terminos_condiciones.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="form-check">
+            <button class="btn btn-outline-primary w-100 py-3" type="submit">Send</button>
+        </div>
+    </div>
+</form>
+    </div>
+</center>
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="termsModalLabel">Términos y Condiciones</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Aquí va el contenido de tus términos y condiciones -->
+
+            <h4>Booking Terms and Conditions</h4>
+            <p style="text-align: justify;">
+            Hello and welcome! We are glad that you take the time to read these terms of service (the
+            “Terms”). These Terms are important as, together with your booking confirmation email (the
+            "Booking Confirmation"), set out the legal terms under which Travel Services are made
+            available to you through our Service. They also cover any interaction or communication you
+            have with us through our Service. Use of our Service is conditioned on your acceptance of
+            these Terms. To book a Travel Service, you must also accept these Terms. If you do not agree
+            to these Terms, please do not use our Service or book a Travel Service. We may change these
+            Terms at any time and your future use of our Service following changes to these Terms is
+            subject to your acceptance of those updated Terms. We recommend that you save or print a
+            copy of these Terms. These Terms contain an arbitration agreement and class action waiver
+            that apply to all claims brought against us in the United States. Please read them carefully.
+            In these Terms:
+            “we”, “us” or “our” refers to "That Vacation Travel Corp"., a corporation of 12150 Sw 128 Court Suite 102, Miami,
+            FL, 33186 USA that provides our Service. “ Our Group of Companies ” refers to us and our corporate subsidiaries and
+            affiliates. "our partners" means any affiliated, co-branded or linked websites through which our group of companies
+            provide content or service. “our Service” refers to the provision of our websites, applications and online tools. “ Travel
+            Provider ” means the travel provider that makes the Travel Services available to you through our Service. “Travel
+            Services” means the travel services made available to you by the Provider(s) of applicable travel(s) through our
+            Service, such as property stays, flights, car rentals. cars or activities to do, etc. “You” refers to you, the traveler, who
+            uses our Service or makes a reservation with our Service.
+            Please read these Terms carefully.
+            To book a Travel Service, you must read and accept these Terms by checking the box
+            indicating your agreement. If you do not agree to these Terms, please do not use our Service
+            or book a Travel Service.
+            Rules and restrictions:
+            In addition to these Terms, other terms and conditions provided by the Travel Providers (such as an airline's conditions
+            of carriage, the terms and conditions of a property, or the rental contract from a car rental company, etc.) also apply to
+            your reservation (“Rules and Restrictions”). To make a reservation, you must accept the Rules and Restrictions of
+            the Travel Provider you select (such as payment of amounts owed, refundability, penalties, restrictions on availability
+            and use of rates or services, etc.). The relevant Rules and Restrictions are provided to you before making a reservation
+            and are incorporated by reference into these Terms.
+            If you violate a travel provider's rules and restrictions, your reservation may be canceled and you may be denied access
+            to the travel service. corresponding trips. You may also lose the money paid for such booking and we or the
+            Travel Provider may debit your account any costs we incur as a result of such breach.
+            </p>
+            <h4>
+            Use of our service:
+            </h4>
+            <p style="text-align: justify;">
+            Our rules: We provide our Service to help you find information about the Travel Services and to help you to book such
+            Travel Services. It is provided to you for no other purpose.
+            You agree that:
+            You will only use our Service for personal, non-commercial purposes. You must be at least 18 years of age and have
+            the legal authority to enter into contracts You will use our Service lawfully and in accordance with these Terms. all
+            information provided by you is true, accurate, current and complete
+            If you have an account with us, you will be able to:
+            safeguard your account information be responsible for any use of your account by you or others
+            if booking on behalf of others:
+            will obtain your authorization before acting on your behalf inform them of the terms that apply to the reservation
+            (including Rules and Restrictions) and ensure that they agree to these terms. You are responsible for paying any
+            amounts due, making any change/cancellation requests, and all other matters related to the reservation.
+            You also accept not:
+            make any false or fraudulent reservation access, monitor or copy any content of our Service using any robot, spider,
+            scraper or other automated means or any manual process violate the restrictions in any robot exclusion headers on our
+            Service or circumvent or circumvent other measures used to prevent or limit access to our Service take any action that
+            imposes, or may impose, a large or unreasonable load on our infrastructure deep link to any part of our Service “frame”,
+            “mirror” or otherwise incorporate any part of our Service into any other website.
+            Access:
+            We may, acting reasonably, deny any person access to our Service at any time and for any reason. any valid reason. We
+            may also make improvements and changes to our Service at any time.
+            Account:
+            To create an account, you must be at least 18 years of age and follow the account creation instructions provided through
+            our Service. The account you create on our Service also allows you to access other sites, applications, tools, and services
+            offered by our company using the same account credentials, in addition to our Service (from “That Vacation Travel
+            Corp”). Please note that when you use your “That Vacation Travel Corp” account, the relevant terms of service
+            displayed on the sites, applications, tools, and services you are using will govern your use of them. For information on
+            how to delete your account, please log in to your account on our Service and follow the applicable account deletion
+            process. For more information about your privacy rights (such as deletion or access), please see our Privacy Statement.
+            How we order your search results:
+            There are many travel options available through our Service and we want your search results to be are as relevant as
+            possible. On the search results page you will see our default sort order; However, you can select how to sort your results
+            and also use filter options to prioritize results based on chosen preferences, for example, price, guest review score or
+            other criteria. You can get Learn more about how we sort search results here. Within your search results, we sometimes
+            also display travel options that are commercial listings paid from our Travel Suppliers. These travel options are clearly
+            labeled for your information. as "Advertisement" or a similar equivalent label, to differentiate them from other travel
+            options.
+            Third Party Redirection and Reservation Services:
+            If you are redirected from our Service to a third-party booking service (such as car rental) to make a travel reservation,
+            please note that any reservation made through such reservation service will be with the third party and not with us. We
+            are not responsible for reservations made through reservation services of third parties and we have no liability to you in
+            respect of such booking. The terms and conditions of the third party service provider will establish what rights you have
+            against them and explain your liability.
+            </p>
+            <h4>
+            Confirmation of a reservation:
+            </h4>
+            <p style="text-align: justify;">
+            Your Reservation Confirmation includes the essential elements of your reservation, such as a description of the
+            Services. Reserved trip and price. We will send your booking confirmation and any relevant travel documents to the
+            email address that you provide when making the reservation. If you do not receive Confirmation of your reservation
+            within 24 hours To make your reservation, contact us.
+            Payments and Prices:
+            The price of the Travel Services will be as shown on our Service, except in cases of obvious error. Prices for Travel
+            Services are dynamic and may change at any time. Price changes are not will affect reservations already accepted,
+            except in cases of manifest error. We show many Travel Services and we We endeavor to ensure that the price
+            displayed is accurate. We reserve the right to correct any errors in prices in our Service. If there is an obvious error
+            and you have made a reservation, we will offer you the opportunity to keep your reservation by paying the correct
+            price or we will cancel your reservation without penalty. We are under no obligation to make available to you
+            Travel Services at an incorrect (lower) price even after a Booking Confirmation has been sent to you, whether the
+            error should have been reasonably obvious to you.
+            In the event of a pricing error, you will be notified as soon as possible. You will have the option to confirm the booking
+            at the correct price or cancel the booking without penalty. We are not obligated to honor bookings at incorrect prices if
+            the error is obvious and should have been recognized as such by you.
+            Taxes:
+            Prices displayed through our Service may include taxes or tax recovery charges. Such taxes or tax recovery charges
+            may include amounts associated with value added tax, goods and services tax, sales tax, occupation tax and others
+            taxes of a similar nature. Taxes or tax recovery charges are generally calculated or estimated on the prices shown at
+            through our Service before any discounts (including those funded by us), coupons and rewards loyalty discounts that
+            may be applicable to your reservation, unless those discounts, coupons and loyalty rewards are considered as a
+            reduction in price for the purposes of calculating or estimating taxes in the jurisdiction relevant to the reservation.
+            You acknowledge that, except as provided below with respect to tax obligations on amounts received from you,
+            including facilitation fees and service fees where applicable in accordance with Section (Stays) below, our Group of
+            Companies does not collect taxes for remittances to taxes applicable. authorities. Tax recovery charges on Pay Now
+            reservations are a recovery of the estimated taxes that our Group of Companies pays to the Travel Supplier for taxes
+            owed by the services provided by the Travel Provider (such as the room rental fee). Travel providers are responsible
+            for remitting applicable taxes to applicable tax jurisdictions. Taxation and rate Appropriate tax rates vary greatly
+            by jurisdiction. The actual amounts paid by our Group of Companies to the Travel Suppliers may vary tax
+            recovery charge amounts, depending on rates, taxation, etc. in effect at the time of actual use of the services
+            provided by the Travel Provider. Local sales, use and/or hotel occupancy taxes are imposed on amounts our
+            Group of Companies charge for the services they provide (service fee and/or facilitation fee) in certain
+            jurisdictions. The actual amount imposed on services provided by our Group of Companies may vary depending on
+            the rates in effect at the time the Travel Provider provides the services. In certain jurisdictions, our Group of
+            Companies is responsible for collecting and remitting local sales, use and/or hotel occupancy taxes. for the full
+            price, including the amounts we charge for our services, as well as the Travel Services provided by the Travel
+            Provider. In certain jurisdictions, you may be responsible for paying local taxes imposed by the authorities local
+            taxes (such as municipal taxes or tourist taxes, etc.). Our Group of Companies or the Supplier Travel may charge
+            you such local taxes. Our Group of Companies will notify you of any local taxes which you must pay before
+            completing your reservation, when said taxes have been notified to our Group of Companies by the Travel
+            Provider. The amount of local taxes may change between the reservation date and the date of stay. If taxes have
+            changed before the date of your stay, you may be required to pay taxes at the higher rate.
+            Processing payment:
+            For certain Travel Services, such as a Package (as defined in Section (Packages), payment may be charged by more
+            than one portion (as will be shown on your payment method statement), however, the total amount charged will not
+            exceed the total price of all Travel Services. When payment is made at the time of your reservation and paid in
+            the local currency of our Service (as applicable), the company that makes that payment (through third-party
+            payment processors) and charges your payment method will be the company that indicated below. to the relevant
+            location of our Service in the table below.
+            </p>
+            <h4>
+            Location:
+            </h4>
+            <p style="text-align: justify;">
+            Our company accepts your payment.
+            United States Thatvacation Travel, Corp. a registered company an United States Without prejudice to applicable law and
+            the jurisdiction paragraph in the (General) Section of these Terms, when a of our companies (as set out in the table above)
+            accept your payment (via third party payment processors) and charges your payment method, the law The laws that will
+            govern that payment transaction will be the laws of the location of said business. Our Privacy Statement provides
+            information about how we use your payment and account information when You choose to have us store a credit or debit
+            card or other payment method for future use.
+            Payment verification:
+            You authorize the applicable company (as set out in the table above) or Travel Provider to: verify your payment method
+            by obtaining prior authorization, charging a nominal fee, or through other means of verification, and At verification,
+            upload your payment method.
+            Fees charged by banks:
+            Some banks and card issuers impose fees for international or cross-border transactions. For example, if you make a
+            reservation using a card issued in a country other than the Travel Provider's location or you choose to transact in a
+            currency other than the local currency of our Service, your card issuer may charge you an international or cross-border
+            fee. -border transaction fee. Additionally, some banks and card issuers impose fees for currency conversion. For example,
+            if you make a reservation in a currency other than the currency of your credit card, your card issuer may convert the
+            amount of the reservation into the currency of your credit card and charge you a conversion fee. If you have any questions
+            about these fees or the exchange rate applied to your reservation, please contact your bank or issuer of the card. Our group
+            of companies is not associated with nor responsible for any fees related to the different exchange rates and fees of the card
+            issuer.
+            Fraud
+            If a reserve or account shows signs of fraud, abuse, association with a government-sanctioned person or entity, or other
+            suspicious activity, we may request additional information from you. If we reasonably conclude that a reservation or
+            account is associated with fraud, abuse, a person or entity government sanctioned or suspicious activity, we may: cancel
+            any reservation associated with your name, email address or account close any associated accounts, and take legal action,
+            including to seek to hold you responsible for any losses. Please contact us about canceling a reservation or closing an
+            account.
+            Cancellation or modification of a reservation: Cancellation or change by you:
+            Cancellations or changes (with respect to travel date, destination, place of departure, property or means of
+            transportation) A reservation can be made by contacting us. You have no automatic right to cancel or change a
+            booking unless permitted by the relevant Travel Provider in accordance with its Rules and Restrictions (which
+            are provided to you before making a reservation). Travel providers may charge you fees for canceling (in
+            whole or in part) or changing a reservation. These rates will be established in the Rules and Restrictions. You
+            agree to pay any charges incurred. Note that, In the case of changes, the price of your new arrangements will
+            be based on the price applicable at the time you request us make the change. This price may not be the same as
+            when you originally booked the Travel Services. Prices tend to increase the closer to the departure date the
+            change is made.
+            Please read the relevant Rules and Restrictions to find out what terms apply to your reservation. For example:
+            If you book a stay at a property and do not cancel or change your reservation before the policy period
+            applicable cancellation, you may be subject to cancellation or change charges as shown in the Rules and
+            corresponding restrictions. Some properties do not allow cancellations or changes to reservations once made.
+            </p>
+            <p style="text-align: justify;">
+            If you make a pay later reservation and no-show or cancel the reservation, the property may impose a fee for no-show
+            or cancellation as shown in the applicable Rules and Restrictions and you will be charged the fee for no-show or
+            cancellation of the property. If you do not show up or use some or all of the booked Travel Services, you may only be
+            owed refunds to you in accordance with the relevant Rules and Restrictions, and When a cancellation affects more than
+            one person on a reservation (for example, two airline tickets booked on one single itinerary, etc.), any applicable
+            cancellation fee will be applied in respect of each person on the canceled reservation. If you wish to cancel or change
+            any part of a reservation and such cancellation or change is permitted by the Supplier then, in addition to any charges
+            imposed by the Travel Provider, we may also charge you an administrative fee. If such an administration fee applies,
+            you will be notified before you agree to proceed with the change/cancellation.
+            Other cancellation or change:
+            We (and the relevant Travel Provider) may cancel your booking if full payment for the booking is not received, or any
+            applicable cancellation/change charges or fees associated with a reservation upon expiration. For various reasons (such
+            as an oversold property due to connectivity issues or a closed property due to a hurricane, etc.), we or the Travel
+            Provider may cancel or modify a reservation. If this happens, we will make reasonable efforts to notify you as soon as
+            possible and offer alternative options/assistance. when possible or a refund.
+            Deposit:
+            Some travel providers require a payment card or cash deposit upon check-in to cover additional expenses incurred
+            during your stay. This deposit is not related to any payment received by the relevant company (as set out in Section
+            (Payment)) for your booking.
+            First night without presentation If you do not show up for the first night of your stay reservation, but plan to check in
+            for subsequent nights, Please confirm this with us before your original check-in date. If you do not confirm this, the
+            entire your reservation. No-show refunds will only be paid to you in accordance with the Rules and Restrictions
+            relevant to the property.
+            Califications:
+            The ratings displayed through our Service indicate what you could expect from the properties showing that level of
+            qualification, including (where applicable) through qualification organizations by local and national stars. These may
+            differ from the standards in your own country. The qualifications displayed on the site do not represent or promise any
+            particular feature or service. There is information Additional information available in the "Overview" or "Amenities"
+            section of the property details page. These guidelines are subject to change, and our Group of Companies and our
+            Partners cannot guarantee their accuracy. of any specific rating displayed from time to time through our Service.
+            Cruices: Some travel providers offering cruises may require you to sign their liability waiver before to participate in
+            the travel service they offer.
+            Things to Do: Some Tour Providers offering Things to Do may require you to sign their liability waiver before
+            participating in the Travel Service they offer. Things to Do Travel Services are generally not transferable or eligible for
+            refunds or exchanges. unless such Travel Services are canceled by the Travel Provider.
+            Packages: We provide you the opportunity to book separate Travel Services together at the same time through our
+            Service (for example, a stay reservation and a flight reservation), but each Travel Service is subject to its own Rules and
+            Restrictions and these Terms (such combination booking is a “Package”).
+            Health:
+            You should check the recommended inoculations/vaccines, which may change at any time. You must consult to your
+            doctor before leaving. You are responsible for ensuring: Meet all health entry requirements. receive relevant/required
+            inoculations/vaccines take all recommended medications and Follow all medical advice regarding your trip.
+            </p>
+            <h4>
+            Passport and visa:
+            </h4>
+            <p style="text-align: justify;">
+            You should check with the relevant Embassy or Consulate for passport and visa information. Requirements may change
+            so please check updated information before booking and leaving and leave sufficient time for all relevant requests. Our
+            Group of Companies is not responsible if you are denied entry to a flight or cruise (if applicable) or to any country, due
+            to your conduct, including failure to carry correct and adequate travel documents required by any Travel Provider,
+            authority or country (including countries through which you are transiting). This includes all stopovers made by an
+            airplane or cruise ship (if applicable), even if you do not leave the plane, the airport or the cruise ship. Some
+            governments require airlines to provide personal information about all travelers on their planes. Data will be collected at
+            the airport when you check-in or, in some circumstances, when you make your reservation. Please contact the relevant
+            airline you are traveling with if you have any questions regarding this. Our Group of Companies does not represent or
+            guarantee that traveling to international destinations is advisable or risk-free. and is not responsible for any damage or
+            loss that may result from travel to such destinations. That Vacation Travel Corp. suggests the visa provider, CIBT at
+            www.visacentral.com.
+            Our responsibility:
+            We own and operate our Service and the Travel Providers provide the Travel Services to you. To the maximum extent
+            permitted by law, our company and our Partners will not be responsible for: any of the Travel Services made available
+            to you by the Travel Providers for the acts, errors, omissions, representations, warranties or negligence of such Travel
+            Providers, or for any personal injury, death, property damage or other damages or expenses resulting from the
+            foregoing. Travel Providers provide us with information that describes the Travel Services.
+            This information includes details of the Travel Service, photographs, rates and the relevant Rules and Restrictions, etc.
+            We show this information through our Service. Travel Suppliers are responsible for ensuring that such information is
+            accurate, complete and up-to-date. Our Group of Companies and our Partners will not be responsible of any
+            inaccuracies in such information, unless and only if we directly caused such inaccuracies (and this also includes
+            property ratings that are intended for guidance only and may not be an official rating). Our Group of Companies and our
+            Partners do not offer guarantees on availability of specific Travel Services. The photographs and illustrations in our
+            Service are provided as a guide to show you the level and type of accommodation only. For more information about the
+            content displayed on our Service, please visit the Content Guidelines. To the maximum extent permitted by law, except
+            as expressly set forth in these Terms: All information, software or Travel Services displayed through our Service are
+            provided without warranty or condition of any kind. This includes, but is not limited to, any implied warranties and
+            conditions of satisfactory quality, merchantability, fitness for a particular purpose, title or non-infringement, and Our
+            Group of Companies and our Partners waive all these warranties and conditions. The display of Travel Services through
+            our Service does not constitute an endorsement or recommendation. of such Travel Services by our Group of companies
+            or our Partners. Our Group of Companies and our Partners disclaim, to the fullest extent permitted by law, all
+            warranties and conditions that our Service, its servers or any email sent by us or our Partners are free of viruses or other
+            harmful components.
+            To the maximum extent permitted by law and subject to the limitations of these Terms, neither our Group of Companies
+            nor our Partners will be liable for any direct, indirect, punitive, special, incidental or consequential loss or damage
+            arising from: travel services, the use of our Service, any delay or inability to use our Service, or your use of links from
+            our Service, whether due to negligence, contract, tort, strict liability, consumer protection statutes or otherwise, and
+            even if our Group of Companies and our Partners have been advised of the possibility of such damages. If our Group of
+            Companies or our Partners are liable for any loss or damage under these Terms, then, to the maximum extent permitted
+            by law, we will only be liable to you for direct damages that were: reasonably foreseeable by both you and us (or our
+            Partners, as applicable), actually suffered or incurred by you, and directly attributable to our actions (or the actions of
+            our Partners, as applicable), and in case of any liability of our Group of Companies and/or our Partners, said liability in
+            no event will it exceed, in total, the greater of (a) the cost paid by you for the Travel Services in question or (b) one
+            hundred dollars (US$100.00) or its equivalent in local currency. This limitation of liability reflects the allocation of
+            risks between you and us. The limitations specified in this Section will survive and apply even if it is determined that
+            any limited remedy specified in these Terms has failed of its essential purpose. Limitations of liability provided for in
+            these Terms are for the benefit of our Group of Companies and our Partners. Any case of force majeure, including
+            media disruption or strike (by airlines, properties or air traffic controllers, as applicable), will result in the suspension of
+            the obligations in these Terms that are affected by the event of force majeure. In such case, the party affected by the
+            force majeure event will not be responsible as consequence of the impossibility of fulfilling such obligations.
+            </p>
+            <h4>
+            Indemnity:
+            </h4>
+            <p style="text-align: justify;">
+            You agree to defend and indemnify our Company and our Partners and any of their officers, directors, employees
+            and agents from and against any claim, cause of action, demand, recovery, loss, damage, fine, penalty or other costs
+            or expenses. of any kind or nature (“Losses”), including, among others, reasonable legal and accounting fees,
+            presented by third parties as a result of: your breach of these Terms or the documents referred to in them your
+            violation of any law or the rights of a third party, or your use of our Service, to the extent that such Losses are not
+            caused directly by the actions of our Group of Companies or our Partners (as applicable).
+            Reviews, comments and photos.
+            By submitting content to our Service by email, posting or otherwise, including reviews of properties, photos, videos,
+            questions, comments, suggestions, ideas or the like contained in any submission (collectively "Submissions"), you:
+            Please confirm that all Submissions you make are your original creation and that you have and will maintain all
+            necessary rights to allow us to use the Submissions as set forth in these Terms, and grant our Group of Companies
+            and our Partners, as permitted by law, a non-exclusive right, free of royalty-free, perpetual, transferable, irrevocable
+            and fully sublicensable across multiple tiers for use, reproduce, modify, adapt, translate, distribute, publish, create
+            derivative works and publicly display and make such Submissions throughout the world in any media, now known or
+            later devised. You also acknowledge and agree that our Group of Companies and our Partners may choose to use the
+            name that you submit with such Submission to attribute your Submissions (for example, listing your name and
+            hometown on a review you submit) at our discretion in a non-identifiable format. Such Submissions may also be
+            shared with Travel Providers. It also grants our Group of Companies the right to legally pursue any person or entity
+            that violates your rights or those of our Group of Companies in the Submissions. Submissions are not confidential or
+            proprietary. If possible, you expressly waive any and all "moral rights" (including rights of attribution or integrity)
+            that may subsist in your Submissions. You agree that you have no objection to the publication, use, modification,
+            deletion or exploitation of your Submissions by our Group of Companies, our Partners or any of our other licensees.
+            You are entirely responsible for the content of your Submissions.
+            You must not post or transmit to or from our Service and agree that any Submission you make will not contain any
+            content that: is unlawful, threatening, libelous, defamatory, obscene, pornographic or would violate rights of
+            publicity or privacy or any law. is commercial (such as solicitation of funds, advertising or marketing of any goods
+            or services, etc.) infringes, misappropriates or violates any copyright, trademark, patent or other right property of any
+            third party, or is objectionable on grounds of public interest, public morality, public order, public safety or national
+            harmony. You will be solely responsible for any damage resulting from failure to comply with the above rules, or
+            from any other damage resulting from your posting of Submissions to our Service. We may exercise our rights (for
+            example: use, publish, display, delete, etc.) regarding any Submission without notice to you. If you submit more than
+            one review for the same property, only your most recent Submission will be eligible for use. All submissions are
+            subject to our content guidelines.
+            We do not claim any ownership, endorsement, or affiliation with any Submission made by you. For more
+            information, see the Content Guidelines.
+            Intellectual Property Policy and Notices Copyright and Trademark Notices:
+            All content on our Service is 2024 "That vacation Travel Corp". All rights reserved. Thatvacation.com,
+            thatvacationtravel.com, the That Vacation Travel logo, among others, are trademarks trademarks or registered
+            trademarks of "That Vaction Travel, Corp". Other logos and product names and companies mentioned herein
+            may be trademarks of their respective owners.
+            We are not responsible for the content of websites operated by parties other than us.
+            The Google® Translate tool is available through our Service to allow you to translate content. The Google®
+            Translate tool uses an automated process to translate text and this may cause inaccuracies. Use of the Google®
+            Translate tool is at your own risk. We make no promises, assurances or guarantees about the accuracy or
+            completeness of the translations provided by Google® Translate.
+            </p>
+            <p style="text-align: justify;">
+            Our Service may contain links to websites operated by parties other than us. Such links are provided for your reference
+            only. We do not control such websites and do not We are not responsible for their content or your use of them. Our
+            inclusion of such links does not imply any endorsement of the material on such websites or any association with their
+            operators.
+            If you become aware of any infringement of our trademark, please inform us by emailing us at
+            booking@thatvacationtravel.com. We only send messages related to trademark infringement to this email address.
+            Intellectual Property Infringement Policy and Reports:
+            We respect the intellectual property rights of others and expect that our suppliers, partners and users (collectively
+            "Users") do the same. We have a policy of prohibiting Users from posting materials that infringe the copyrights,
+            trademark rights or other intellectual property rights of others, and under appropriate circumstances we will terminate the
+            accounts of Users who are repeat infringers. The requirements and Instructions for filing copyright and trademark
+            complaints can be found at the “Intellectual Property Infringement Complaints and Forms” found here.
+            Software:
+            Any software available for download from our Service or a mobile application store ("Software") is a work
+            protected by copyright of our Company or our respective suppliers. Your use of the Software is governed by the
+            terms of the end user license agreement (if applicable) accompanying the Software ("License Agreement"). You
+            must first accept the License agreement to install, download or use any Software. For any Software not
+            accompanied by a License Agreement, we grant you a limited, personal, non-exclusive, license. non-transferable
+            and non-sublicensable to download, install and use the Software to use our Service in accordance with these
+            Terms and Conditions. without any other purpose. The Software is provided to you free of any fees or charges. All
+            software (such as all HTML code and Active X controls, etc.) contained in our Service is the property of our
+            Group of Company, our Partners or our respective suppliers. All software is protected by copyright laws and
+            regulations. of international treaties. Any reproduction or redistribution of the Software is prohibited by law and
+            may result in serious civil and criminal sanctions. Anyone who violates this will be prosecuted. Without limiting
+            the foregoing, copying or reproduction of the Software to any other server or location for personal use is expressly
+            prohibited. subsequent reproduction or redistribution. The Software is warranted, in any event, solely under the
+            terms of the License Agreement.
+            Your privacy and personal information:
+            We are committed to the privacy, confidentiality and security of the personal information entrusted to us. Please review
+            our current Privacy Statement, which also governs your use of our Service and is incorporated by reference herein.
+            Terms, to understand our practices.
+            Disputes and arbitration
+            Please read this section carefully. Requires any and all claims to be resolved through arbitration binding or in small
+            claims court, and prevents you from bringing a class action or similar proceeding in any forum. Arbitration is required if
+            your country of residence enforces arbitration agreements, including, but not limited to, the United States. If you are
+            located outside the United States but are trying to file a claim in the United States, arbitration is required to determine the
+            threshold of whether this dispute resolution section applies to you, as well as all other threshold determinations, including
+            residency, arbitrability, venue, and applicable law. If your country residence does not enforce arbitration agreements,
+            mandatory pre-arbitration dispute resolution, and notice and prohibition of class actions or representative proceedings set
+            forth below even They apply to the extent required by law. We are committed to traveler satisfaction and resolving
+            consumer disputes in a timely and efficient manner. We have a two-step dispute resolution process that includes: (1)
+            investigation and negotiation of your claim with our Traveler Service team; and, if necessary, (2) binding arbitration
+            administered by the American Association Arbitration (“AAA”) or, for arbitrations outside the United States, an agreed
+            upon arbitral tribunal. Both you and us We retain the right to seek relief in small claims court as an alternative to
+            arbitration.
+            </p>
+            <h4>
+            Arbitration Agreement (“Arbitration Agreement”):
+            </h4>
+            <p style="text-align: justify;">
+            You and we mutually agree that any dispute between us arising out of or relating in any way to our Service, these
+            Terms, our Privacy Statement, any services or products provided by us or anyone of our subsidiaries, travel providers or
+            companies that offer products or services through us, any dealings with our Traveler Services agents or any
+            representation made by us (“Claims”) will be resolved through binding arbitration, rather than in court, except those
+            resolved in small claims court. This includes any Claim you bring against us, our subsidiaries, Travel Suppliers or any
+            company that offers products or services through us (which are beneficiaries of this Arbitration Agreement). This
+            Arbitration Agreement shall be binding upon and include any claims brought by or against third parties, including, but
+            not limited to, their spouses, heirs, third-party beneficiaries and assigns, when their underlying claims are related to its
+            use. of Travel Services. To the extent any third party beneficiary of these Terms brings claims against the entities
+            covered by these Terms; those claims will also be subject to this Arbitration Agreement. The arbitrator will also be
+            responsible for determining all threshold issues of arbitrability, including, but not limited to, the existence, scope or
+            validity of the Arbitration Agreement, any defense to arbitration, such as related issues with whether this Arbitration
+            Agreement is enforceable, unconscionable or illusory, and any defense to arbitration, including, but not limited to,
+            jurisdiction, waiver, delay, seizure or estoppel.
+            Small Claims Court Matters:
+            Without prejudice to the arbitration provisions above, you or we may present or remove any claim in small claims court
+            if the claim is within the jurisdictional limit of such court; whenever said The court does not have the authority to hear
+            class or representative claims, nor to consolidate or join the claims. claims of other people or parties who may find
+            themselves in a similar situation in said procedure. Besides, whether the claims raised in any arbitration claim are
+            within the jurisdictional limit of the claims court minor claims, then you or we may elect to have the claims heard in
+            small claims court, instead of in arbitration, at any time before the arbitrator is appointed. , or in accordance with AAA
+            rules, notifying to the other party of that election in writing. No class actions or representative proceedings. You and we
+            agree that any and all procedures to resolve Claims will be conducted solely on an individual basis and not in a class,
+            consolidated or representative action, including, but not limited to, as a private attorney general. The arbitrator may not
+            consolidate more than one party's Claims and may not preside over any class or class proceeding. representative. You
+            and we further acknowledge that each of you waives your right to a jury trial.
+            Arbitration rules and applicable law:
+            This Arbitration Agreement is a “written agreement to arbitrate” evidencing a transaction in interstate commerce. The
+            Federal Arbitration Act (“ FAA ”) governs all substantive and procedural interpretation and application of this
+            provision. The arbitration will be administered by the AAA in accordance with the AAA Consumer Arbitration Rules or
+            other rules of AAA arbitrations that the AAA determines are applicable (the “AAA Rules”) then in effect, except as be
+            modified here. The AAA Rules are available at www.adr.org. The arbitrator will apply the law of the state of
+            Washington, without regard to conflict of laws principles, except that the FAA governs all provisions relating to
+            arbitration. Foreign laws do not apply. This Arbitration Agreement may only be modified by mutual written agreement.
+            Resolution and mandatory notification of disputes prior to arbitration:
+            Before initiating arbitration, you agree to provide us the opportunity to resolve any Claim by notifying us of the Claim
+            by writing and attempting in good faith to negotiate an informal resolution. You must send, by certified mail, a written
+            and signed Notice of Dispute (“ Notice ”) addressed to: That Vacation Travel Corp 12150 Sw 128th Ct Suite 102 Miami
+            Fl 33186. The Notice must contain the following information: (1) your name, (2) your address, (3) the email address
+            you used to make your reservation, (4) a brief description of the nature of your complaint, (5) the resolution you seek,
+            and (6) your signature. If we are unable to resolve your complaint within 60 days of your notification, you may begin an
+            arbitration proceeding. Participating in this pre-arbitration notice and dispute resolution process is a requirement that
+            must be met before to begin arbitration. The AAA has no authority to administer or adjudicate the Claim unless and
+            until the complied with all Pre-Arbitration Notice and Dispute Resolution requirements. The statute of limitations will
+            end while the parties participate in the dispute resolution process required by this Section.
+            Starting the arbitration:
+            To begin arbitration, you must file the Claim with the AAA as specified in the AAA Rules. The AAA provides a
+            Demand for Arbitration – Consumer Arbitration Rules form at www.adr.org or by calling to AAA at 1-800-778-7879. A
+            party initiating arbitration against us must submit the Request for Arbitration in writing to the That Vacation Travel
+            Corp 12150 Sw 121th Ct Suite 102 Miami Fl 33186 to the same time you file the Complaint with AAA. The arbitration
+            will be conducted by a single arbitrator selected in accordance with the AAA Rules or by mutual agreement between
+            you and us. The Arbitration will take place: (i) at a location determined by the AAA in accordance with the Rules from
+            AAA (provided that such location is reasonably convenient to you and does not require travel more than 100 miles from
+            your home or workplace); or (ii) in any other location that you and we mutually agree to; or (iii) through video
+            conferencing; or (iv) at your option, if the only claims in the arbitration are brought by you and are for less of $40,000 in
+            total, by telephone or by written submission.
+            </p>
+            <h4>
+            Attorneys' fees and costs:
+            </h4>
+            <p style="text-align: justify;">
+            Your arbitration fees and your share of arbitrator compensation shall be governed by the AAA Rules and, where
+            applicable, they will be limited by the AAA Consumer Rules. To start arbitration, Each party will be responsible
+            for paying the filing fees required by the AAA, which are approximately equivalent to current court filing fees. In
+            the event that you can demonstrate that the costs of arbitration will be prohibitive compared to the costs of
+            litigation, or that you would otherwise be eligible for a waiver of court fees, we will pay most of your filing and
+            hearing fees in connection to the arbitration as the arbitrator deems necessary to prevent the arbitration from being
+            cost-prohibitive compared to the costs of litigation, regardless of the outcome of the arbitration, unless the arbitrator
+            determines that your claim(s) were frivolous or presented in a poor manner. faith. Either party may request that the
+            arbitrator award attorneys' fees and costs upon showing that the other party has filed a claim, counterclaim or
+            unfounded defense of fact or law, presented in bad faith or with the purpose of harassment. , or is otherwise
+            frivolous, as permitted by applicable law and the AAA Rules.
+            Referee's decision:
+            There is no judge or jury in arbitration, and judicial review of an arbitration award is limited under the FAA. The
+            arbitrator's decision will include the essential findings and conclusions on which the arbitrator bases the award.
+            Judgment on the arbitration award may be entered in any court with appropriate jurisdiction. The arbitrator may
+            award any relief permitted by law or the AAA Rules, but the relief declaratory or by court order can be granted
+            only on an individual basis and only to the extent necessary to provide relief warranted by the claimant's individual
+            claim.
+            Divisibility and survival:
+            If any part of this Dispute and Arbitration Provision is found to be unenforceable or illegal for any reason, (1) such
+            part shall be severed and the remainder of the Provision shall be given full force and effect. effect; and (2) to the
+            extent any Claim must proceed on a collective, consolidated basis or representative, such Claims must be litigated
+            in a civil court of competent jurisdiction and not in arbitration, and the parties agree that litigation of those claims
+            will be stayed pending the outcome of any individual Claim in arbitration.
+            Traveler attention and complaint management:
+            For answers to your questions or ways to contact us, visit our support page here. Or you can write to us at: Attn:
+            Traveler Attention That VacationTravel, Corp. 12150 SW 128th Court Suite 102, Miami, FL, 33186 USA
+            Generalities:
+            Applicable law and jurisdiction:
+            These Terms are governed by the Federal Arbitration Act, federal arbitration law, and the laws of the State of
+            Washington, without regard to conflict of laws principles.
+            Insurance:
+            Unless otherwise stated, prices shown do not include travel insurance. It is recommended to take out insurance that
+            covers the consequences of certain cases of cancellation and certain risks (such as repatriation costs in the event of an
+            accident or illness). You are responsible for ensuring that any insurance policy taken out adequately covers your needs.
+            You may be shown certain travel insurance products. If so, the details of the insurance provider, relevant key
+            information and terms and conditions will be displayed on our Service.
+            Do not invoke:
+            Our failure or delay to enforce any provision of these Terms does not waive our right to enforce the same or any other
+            provision of these Terms in the future.
+            Inapplicable provisions:
+            If a court or other authority of competent jurisdiction determines that any provision (or partial provision) of these Terms
+            is invalid, illegal or unenforceable, it will be deemed that provision (or partial provision), if necessary, does not form
+            part of these Terms. Terms with you. In such case, the validity and applicability of the other provisions will not be
+            affected.
+            Full agreement:
+            These Terms constitute the entire agreement between you and us regarding our Service. They supersede all prior or
+            contemporaneous communications (whether electronic, oral or written) between you and us about our Service.
+            Assignment:
+            We may, and you may not, assign, subcontract or delegate any rights, duties or obligations under these Terms.
+            Third party rights:
+            Except as expressly provided in these Terms, we do not intend that any part of these Terms Terms is enforceable by any
+            person who is not a party to these Terms. will not be required the consent of third parties to the waiver, variation or
+            termination of any part of these Terms. These Terms do not give rise to any rights under any applicable law or
+            regulation in relation to with the rights of third parties to enforce any part of these Terms.
+            Survival of obligations:
+            Any provision of these Terms, which expressly, or by its nature, imposes obligations beyond of expiration or
+            termination of these Terms, will survive such expiration or termination.
+            </p>
+            <h4>
+            Travel registrations
+            </h4>
+            <p style="text-align: justify;">
+            Seller of Travel: That Vacation Travel Corp. is a registered seller of travel in each of the US states listed below:
+            • Florida registration number: ST38963
+            </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Close & Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Asegúrate de incluir el modal de términos y condiciones aquí -->
+
+</div>
+
+<!-- Bootstrap Bundle JS (incluye Popper) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+    const checkbox = document.getElementById('{{ form.terminos_condiciones.id_for_label }}');
+    checkbox.disabled = true;
+
+    const closeModalButton = document.querySelector('.btn[data-dismiss="modal"]');
+
+    closeModalButton.addEventListener('click', function() {
+        checkbox.disabled = false;
+        checkbox.checked = true;
+    });
+});
+
+</script>
+</body>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row justify-content-center py-5">
+                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                       <div class="position-relative w-75 mx-auto animated slideInDown">
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<body>
+
+<div class="container">
+    <h1 class="mt-4 mb-4">Disponibilidad de Cabinas</h1>
+
+        {% for categoria, cabinas in categorias_cabinas.items %}
+
+          <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample{{forloop.counter}}" role="button" aria-expanded="false" aria-controls="collapseExample{{forloop.counter}}">
+            {% if categoria == 'Ocean_view' %}
+            Ocean View
+            {% else %}
+            {{categoria}}
+            {% endif %}
+          </a>
+
+{% if cabinas %}
+<div class="collapse" id="collapseExample{{forloop.counter}}">
+  <div class="card card-body">
+    <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Número de Cabina</th>
+                        <th>Ubicacion Cabina</th>
+                        <th>Deck</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cabina in cabinas %}
+                        <tr>
+                            <td>
+                                 <a href="{% url 'bookingpro' cruise_id=cruise cabin_number=cabina.number itemcode=itemcode itemtype=itemtype packagecode=packagecode category=cabina.category_code %}">
+                                {% if cabina.number == 'G00000' %}
+                                Garantizada
+                                {% else %}
+                                {{ cabina.number }}
+                                {{ cabina.category_code}}
+                                {% endif %}
+                            </td>
+                            <td>
+                              {{ cabina.name }}
+                            </td>
+                            <td>{{ cabina.deck }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+  </div>
+    {% else %}
+        <p>No hay cabinas disponibles en esta categoría.</p>
+    {% endif %}
+</div>
+{% endfor %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+
+</html>

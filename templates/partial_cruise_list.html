@@ -1,0 +1,44 @@
+{% load custom_filters %}
+{% load custom_tags %}
+{% load static %}
+
+{% for category, cruises in categorized_cruises.items %}
+    {% for cruise in cruises %}
+        {% if cruise.total_price > 0 %}
+            <div onclick="window.location.href='/experience/{{ cruise.cruiseID }}/{{ price_variable }}'" class="btn card custom-card mb-4">
+                <div class="row no-gutters card-inner">
+                    <div class="col-md-8">
+                        <div class="card-body custom-card-body">
+                            <div style="padding-bottom: 10px;" class="cruise-info">
+                                <h5 class="card-title text-primary mb-0">{{ cruise.shipName }}</h5>
+                            </div>
+                            <p style="font-weight: 400; font-size: .9em" class="mb-2 text-muted"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ cruise.itinDesc }}</p>
+                            <p style="font-weight: 400; font-size: .9em" class="mb-2 text-muted"><i class="fa fa-moon text-primary me-2"></i>{{ cruise.nights }} Nights &nbsp; &nbsp;<i class="fa fa-user text-primary me-2"></i>{{ cruise.total_participants }}</p>
+                            <p style="font-weight: 400; font-size: .9em" class="mb-4 text-muted">
+                                <i class="fa fa-calendar-alt text-primary me-2 formatted-time" data-departure="{{ cruise.sailingDate }}" data-return="{{ cruise.returnDate }}"></i>
+                                <span class="formatted-dates"></span>
+                            </p>
+                            <p style="font-weight: 400; font-size: 14px; margin-bottom: 0px; padding-bottom: 0px; margin-left: 30px; padding-top: 1px;" class="text-dark mb-2">
+
+                            </p>
+                            <p style="font-weight: 400; font-size: 22px; margin-bottom: 0px; padding-bottom: 0px; margin-left: 30px; padding-top: 1px;" class="text-dark mb-2">
+                               {% if cruise.price_maximo %}
+                                    <span style="text-decoration: line-through; font-size: 14px;">${{ cruise.price_maximo }}</span>&nbsp;
+                                {% endif %}
+                                ${{ cruise.price_per_person|floor }}&nbsp;<span style="font-size:12px;"> {{ category }} room per person</span>
+                            </p>
+
+                            <p style="font-size: 10px; margin-left: 50px;  padding-left: 5px; font-weight: 400; padding-top: 1px; margin-top: 1px;">Tax & Fees Included</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex flex-column justify-content-center align-items-center p-4">
+                        <img src="/static/images/ships/{{ cruise.shipName }}.jpg" alt="{{ cruise.shipName }}" class="img-fluid mb-8" style="padding-right: 6px; border-radius: 15px;" />
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+
+
+

@@ -1,0 +1,119 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 600px;
+        margin: auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+        margin-bottom: 15px;
+        position: relative;
+    }
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 10px 10px 10px 40px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .form-group i {
+        position: absolute;
+        left: 10px;
+        top: 35px;
+        font-size: 16px;
+        color: #aaa;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        cursor: pointer;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .form-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .form-header h2 {
+        margin: 0;
+        font-size: 24px;
+    }
+</style>
+
+<div class="container">
+    <div class="form-header">
+        <h2>Payment Form</h2>
+    </div>
+    {% if booking_no %}
+        <form action="{% url 'process_payment1' booking_no=booking_no total=total %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="total" value="{{ total }}">
+
+            <div class="form-group">
+                <label for="credit_card_code">Credit Card Code (e.g., MC):</label>
+                <i class="fas fa-credit-card"></i>
+                <input type="text" id="credit_card_code" name="credit_card_code" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="credit_card_number">Credit Card Number:</label>
+                <i class="fas fa-credit-card"></i>
+                <input type="text" id="credit_card_number" name="credit_card_number" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="name_on_credit_card">Name on Credit Card:</label>
+                <i class="fas fa-user"></i>
+                <input type="text" id="name_on_credit_card" name="name_on_credit_card" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="ccv_code">CCV Code:</label>
+                <i class="fas fa-lock"></i>
+                <input  type="text" id="ccv_code" name="ccv_code" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="expiration_month">Expiration Month:</label>
+                <i class="fas fa-calendar-alt"></i>
+                <input type="text" id="expiration_month" name="expiration_month" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="expiration_year">Expiration Year:</label>
+                <i class="fas fa-calendar-alt"></i>
+                <input type="text" id="expiration_year" name="expiration_year" required>
+            </div>
+            
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" value="Make Payment">
+            </div>
+        </form>
+    {% endif %}
+</div>
+
+{% endblock %}

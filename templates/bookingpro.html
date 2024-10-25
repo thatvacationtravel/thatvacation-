@@ -1,0 +1,740 @@
+{% extends "index.html" %}
+{% load static %}
+{% load custom_filter_add_bookingpro %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- intl-tel-input JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+
+
+<style>
+
+
+input[type="text"], input[type="select"] {
+    width: 100% !important;
+    border: 1px solid #92afd1 !important;
+    border-radius: 4px !important;
+    font-size: 16px;
+}
+
+
+.form-select:focus {
+    border-color: #92afd1 !important;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgb(134 184 23 / 0%);
+}
+
+
+.form-select{
+    border: 1px solid #92afd1 !important;
+}
+
+.form-control{
+    border: 1px solid #92afd1 !important;
+}
+
+.form-control:disabled, .form-control:read-only {
+    background-color: #e9ecef00 !important;
+    opacity: 1;
+}
+
+
+
+
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #3498db !important;
+    outline: none !important;
+    box-shadow: 0 0 0 .25rem rgb(134 184 23 / 0%);
+}
+
+
+    #toggleIncluded {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        font-size: 16px;
+        color: #616179;
+    }
+
+    .triangle-down {
+        width: 0;
+        height: 0;
+        margin-left: 8px;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #616179;
+        transition: transform 0.3s;
+    }
+
+
+    .triangle-up {
+        transform: rotate(180deg);
+    }
+
+    #toggleIncluded1 {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        font-size: 16px;
+        color: #616179;
+    }
+
+    .triangle-down1 {
+        width: 0;
+        height: 0;
+        margin-left: 8px;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #616179;
+        transition: transform 0.3s;
+    }
+
+    .triangle-up1 {
+        transform: rotate(180deg);
+    }
+
+
+.form-group input, .form-group select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+
+
+.togglePassenger-first {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px;
+        background-color: #0071a7 !important;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+.togglePassenger {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #0071a7 !important;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .triangle-down3 {
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid white;
+        transition: transform 0.3s;
+    }
+
+
+
+    .intl-tel-input input {
+    display: none;
+}
+
+.intl-tel-input .flag-container {
+    width: auto;
+    margin-right: 10px;
+}
+
+.iti input, .iti input[type=tel], .iti input[type=text] {
+    display: inline-block;
+    width: auto;
+    padding-left: 70px !important;
+}
+
+
+.dining{
+    word-wrap: normal;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    background: #e9ecef00 !important;
+    border: 1px solid #92afd1 !important;
+    padding: 10px;
+}
+
+
+</style>
+
+
+<div class="container">
+    <h1 class="mt-4 mb-4">Booking Information</h1>
+    <div class="row">
+        <div class="col-lg-6 order-1 order-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <image style="width: 30%; float: right;" src="{% static 'images/logos/logoMSC.png' %}" /><br>
+                    <h5 class="card-title" style="padding-top: 20px; font-weight: 800;">Booking Details</h5>
+                    <p>
+                        Passengers: {{ total_travelers }}<br>
+                        Booking Date: {{ crucero.sailingDate }} &mdash; {{ returnDate }}<br>
+                        Ship: {{ crucero.shipName }}<br>
+                        Stateroom: {{ cabin_number }}<br>
+                        {% for category, cabins in cabin_categories.items %}
+                            Room Category: {{ category }}
+                        {% endfor %}
+                    </p>
+
+                    <h5 id="toggleIncluded">Whats Included:
+                        <span id="triangle" class="triangle-down"></span>
+                    </h5>
+                    <ul id="includedList" style="display: ;">
+                        {% for description, description_long in experiencia %}
+                            <li>
+                                <strong>{{ description }}</strong><br>
+                                <p style="font-size: 12px;">{{ description_long|safe }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <br>
+
+                    <h5 id="toggleIncluded1">Itinerary:
+                        <span id="triangle1" class="triangle-down1"></span>
+                    </h5>
+                    {% if itinerario_reorganizado %}
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="includedList1" style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Port</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in itinerario_reorganizado %}
+                                    <tr>
+                                        <td>
+                                            <strong>
+                                                Day {{ i.dia }}
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            {{ i.port_name }}
+                                        </td>
+                                        <td>
+                                            {% if i.time %}
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                                    <path d="M12 1.75A10.25 10.25 0 1 0 22.25 12A10.25 10.25 0 0 0 12 1.75zM12 20.5a8.5 8.5 0 1 1 8.5-8.5a8.51 8.51 0 0 1-8.5 8.5z" fill="black"/>
+                                                    <path d="M12.75 7h-1.5v6.25l5.5 3.3l.75-1.23l-4.75-2.82z" fill="black"/>
+                                                </svg>
+                                                <span class="formatted-time">{{ i.time }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+
+                    <br>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Details</th>
+                                    <th>Price</th>
+                                    <th>Tax & Fees</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key, value in debug_info.items %}
+                                    {% if price_variable == 'twoAdult' or price_variable == 'oneAdult1Ch' %}
+                                        {% if key == 'one_pax' %}
+                                            <tr>
+                                                <td>Passenger: 1</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total1=value|add:crucero.gftA %}{{ total1 }}{% endwith %}</td>
+                                            </tr>
+                                        {% elif key == 'two_pax' %}
+                                            <tr>
+                                                <td>Passenger: 2</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total2=value|add:crucero.gftA %}{{ total2 }}{% endwith %}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% elif price_variable == 'oneAdult' %}
+                                        {% if key == 'one_pax' %}
+                                            <tr>
+                                                <td>Passenger: 1</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total1=value|add:crucero.gftA %}{{ total1 }}{% endwith %}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% elif price_variable == 'twoAdult1Ch' or price_variable == 'threeAdult' or price_variable == 'twoAdult1JrCh'%}
+                                    {% if key == 'one_pax' %}
+                                            <tr>
+                                                <td>Passenger: 1</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total1=value|add:crucero.gftA %}{{ total1 }}{% endwith %}</td>
+                                            </tr>
+                                        {% elif key == 'two_pax' %}
+                                            <tr>
+                                                <td>Passenger: 2</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total2=value|add:crucero.gftA %}{{ total2 }}{% endwith %}</td>
+                                            </tr>
+                                        {% elif key == 'three_pax' %}
+                                            <tr>
+                                                <td>Passenger: 3</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total3=value|add:crucero.gftA %}{{ total3 }}{% endwith %}</td>
+                                            </tr>
+                                    {% endif %}
+                                    {% else %}
+                                        {% if key == 'one_pax' %}
+                                            <tr>
+                                                <td>Passenger: 1</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total1=value|add:crucero.gftA %}{{ total1 }}{% endwith %}</td>
+                                            </tr>
+                                        {% elif key == 'two_pax' %}
+                                            <tr>
+                                                <td>Passenger: 2</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total2=value|add:crucero.gftA %}{{ total2 }}{% endwith %}</td>
+                                            </tr>
+                                        {% elif key == 'three_pax' %}
+                                            <tr>
+                                                <td>Passenger: 3</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total3=value|add:crucero.gftA %}{{ total3 }}{% endwith %}</td>
+                                            </tr>
+                                        {% elif key == 'four_pax' %}
+                                            <tr>
+                                                <td>Passenger: 4</td>
+                                                <td>{{ value }}</td>
+                                                <td>{{ crucero.gftA }}</td>
+                                                <td>{% with total4=value|add:crucero.gftA %}{{ total4 }}{% endwith %}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                <tr>
+                                    <td>Total amount</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ total_general }}</td>
+                                </tr>
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                 
+                    <p>
+                        "If you have not yet selected one of our beverage packages, you can do so before continuing with the process by <a href="#" onclick="goBack()">click here</a>"
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 order-2 order-md-1">
+            <div class="card shadow-sm rounded">
+                <div class="card-body">
+                    <form method="post" id="bookingForm">
+                        {% csrf_token %}
+                        {{ formset.management_form }}
+                        {% for passenger_form in formset %}
+                            {% if forloop.first %}
+                                <!-- formulario del primer pasajero de manera predeterminada -->
+                                <fieldset>
+                                    <legend style="background-color:#616179" class="togglePassenger-first">Passenger: 1</legend>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.first_name.label_tag }} {{ passenger_form.first_name }}
+                                            </div>
+                                            {% if passenger_form.first_name.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.first_name.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.last_name.label_tag }} {{ passenger_form.last_name }}
+                                            </div>
+                                            {% if passenger_form.last_name.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.last_name.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.gender.label_tag }}  {{ passenger_form.gender }}
+                                            </div>
+                                            {% if passenger_form.gender.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.gender.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.date_of_birth.label_tag }}
+                                                <input type="text" class="form-control datepicker-input" id="date_of_birth_{{ forloop.counter }}" name="form-{{ forloop.counter0 }}-date_of_birth" value="{{ passenger_form.date_of_birth.value|default_if_none:'' }}" placeholder="Birthdate*" autocomplete="off">
+                                            </div>
+                                            {% if passenger_form.date_of_birth.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.date_of_birth.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.city.label_tag }}  {{ passenger_form.city }}
+                                            </div>
+                                            {% if passenger_form.city.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.city.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Dinner seating</label>
+                                                <select class="dining" name="dining_option" id="dining_option">
+                                                    {% for option in dining_options %}
+                                                        <option value="{{ option }}" {% if forloop.first %}selected{% endif %}>{{ option }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <input type="hidden" id="hidden_value" name="hidden_value" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.telephone_no.label_tag }}  {{ passenger_form.telephone_no }}
+                                            </div>
+                                            <input type="hidden" name="country_code" id="country_code">
+                                            {% if passenger_form.telephone_no.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.telephone_no.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.email.label_tag }}  {{ passenger_form.email }}
+                                            </div>
+                                            {% if passenger_form.email.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.email.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            {% else %}
+                                <!-- Secciones desplegables para pasajeros adicionales -->
+                                <h5 style="background-color:#616179" class="togglePassenger" id="togglePassenger{{ forloop.counter }}">Passenger: {{ forloop.counter }}
+                                    <span id="trianglePassenger{{ forloop.counter }}" class="triangle-down3"></span>
+                                </h5>
+                                <fieldset id="passengerFieldset{{ forloop.counter }}" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.first_name.label_tag }} {{ passenger_form.first_name }}
+                                            </div>
+                                            {% if passenger_form.first_name.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.first_name.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.last_name.label_tag }} {{ passenger_form.last_name }}
+                                            </div>
+                                            {% if passenger_form.last_name.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.last_name.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.date_of_birth.label_tag }}
+                                                <input type="text" class="form-control datepicker-input" id="date_of_birth_{{ forloop.counter }}" name="form-{{ forloop.counter0 }}-date_of_birth" value="{{ passenger_form.date_of_birth.value|default_if_none:'' }}" placeholder="Birthdate*" autocomplete="off">
+                                            </div>
+                                            {% if passenger_form.date_of_birth.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.date_of_birth.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ passenger_form.gender.label_tag }} {{ passenger_form.gender }}
+                                            </div>
+                                            {% if passenger_form.gender.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.gender.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ passenger_form.city.label_tag }} {{ passenger_form.city }}
+                                            </div>
+                                            {% if passenger_form.city.errors %}
+                                                <div class="alert alert-danger">{{ passenger_form.city.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            {% endif %}
+                        {% endfor %}
+                        <hr />
+                        {{ formset.non_form_errors }}
+
+                        <br>
+                        <button type="submit" class="btn btn-primary mt-3" id="submit-btn">Booking Confirmation</button>
+                    </form>
+                    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectElement = document.getElementById('dining_option');
+        var hiddenField = document.getElementById('hidden_value');
+
+        function updateHiddenField() {
+            var selectedValue = selectElement.value;
+            var mappedValue = '';
+
+            if (selectedValue === 'SECOND SITTING') {
+                mappedValue = 'L';
+            } else if (selectedValue === 'FIRST SITTING') {
+                mappedValue = 'M';
+            } else if (selectElement.selectedIndex === 0) {
+                mappedValue = 'CL';
+            } else if (selectElement.selectedIndex === 1) {
+                mappedValue = 'CE';
+            }
+
+            hiddenField.value = mappedValue;
+
+        }
+        updateHiddenField();
+
+        selectElement.addEventListener('change', function() {
+            updateHiddenField();
+        });
+    });
+</script>
+
+
+<script>
+    function goBack() {
+        if (document.referrer) {
+            window.location.href = document.referrer;
+        } else {
+            window.history.back();
+        }
+    }
+</script>
+
+
+<script>
+    function goBack() {
+        if (document.referrer) {
+            window.location.href = document.referrer;
+        } else {
+            window.history.back();
+        }
+    }
+</script>
+
+<script>
+    document.getElementById('toggleIncluded').addEventListener('click', function() {
+        var includedList = document.getElementById('includedList');
+        var triangle = document.getElementById('triangle');
+
+        if (includedList.style.display === 'none') {
+            includedList.style.display = 'block';
+            triangle.classList.add('triangle-up');
+        } else {
+            includedList.style.display = 'none';
+            triangle.classList.remove('triangle-up');
+        }
+    });
+</script>
+
+<script>
+    document.getElementById('toggleIncluded1').addEventListener('click', function() {
+        var includedList = document.getElementById('includedList1');
+        var triangle = document.getElementById('triangle1');
+
+        if (includedList1.style.display === 'none') {
+            includedList1.style.display = 'block';
+            triangle.classList.add('triangle-up1');
+        } else {
+            includedList1.style.display = 'none';
+            triangle.classList.remove('triangle-up1');
+        }
+    });
+</script>
+
+    {% for passenger_form in formset %}
+    {% if not forloop.first %}
+    <script>
+        document.getElementById('togglePassenger{{ forloop.counter }}').addEventListener('click', function() {
+            var fieldset = document.getElementById('passengerFieldset{{ forloop.counter }}');
+            var triangle = document.getElementById('trianglePassenger{{ forloop.counter }}');
+
+            if (fieldset.style.display === 'none') {
+                fieldset.style.display = 'block';
+                triangle.classList.add('triangle-up');
+            } else {
+                fieldset.style.display = 'none';
+                triangle.classList.remove('triangle-up');
+            }
+        });
+    </script>
+    {% endif %}
+{% endfor %}
+
+
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(){
+        const datepickerElements = document.querySelectorAll('.datepicker-input');
+
+        if (datepickerElements.length > 0) {
+            flatpickr('.datepicker-input', {
+                dateFormat: "m/d/Y",
+                maxDate: "today",
+                altInput: true,
+                altFormat: "F j, Y",
+                allowInput: true,
+            });
+        } else {
+            console.warn("No se encontró ningún elemento con la clase 'datepicker-input'");
+        }
+    });
+</script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('bookingForm');
+        const errorMessageDiv = document.getElementById('error-message');
+
+        form.addEventListener('submit', function (event) {
+            errorMessageDiv.style.display = 'none';
+            errorMessageDiv.textContent = '';
+            let hasErrors = false;
+            const errorMessages = [];
+            const passengers = form.querySelectorAll('fieldset');
+
+            passengers.forEach((passenger, index) => {
+                const firstName = passenger.querySelector('[name$="-first_name"]');
+                const lastName = passenger.querySelector('[name$="-last_name"]');
+                const dateOfBirthInput = passenger.querySelector('[name$="-date_of_birth"]');
+                const city = passenger.querySelector('[name$="-city"]');
+                const gender = passenger.querySelector('[name$="-gender"]');
+                const telephoneNo = passenger.querySelector('[name$="-telephone_no"]');
+
+                if (index === 0) {
+                    if (!firstName.value || !lastName.value || !dateOfBirthInput.value || !city.value || !gender.value ||
+                        !telephoneNo.value) {
+                        hasErrors = true;
+                        errorMessages.push(`Passenger #${index + 1} must complete all required fields * .`);
+                    } else {
+                        const dob = new Date(dateOfBirthInput.value);
+                        const today = new Date();
+                        let age = today.getFullYear() - dob.getFullYear();
+                        const monthDifference = today.getMonth() - dob.getMonth();
+
+                        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
+                            age--;
+                        }
+
+                        if (age < 21) {
+                            hasErrors = true;
+                            errorMessages.push(`Passenger #${index + 1} must be at least 21 years old.`);
+                        }
+                    }
+                } else {
+                    if (!firstName.value || !lastName.value || !dateOfBirthInput.value || !city.value || !gender.value) {
+                        hasErrors = true;
+                        errorMessages.push(`Passenger #${index + 1} must complete first name, last name, birthdate, country, and gender.`);
+                    } else {
+                        const dob = new Date(dateOfBirthInput.value);
+                        const today = new Date();
+                        let age = today.getFullYear() - dob.getFullYear();
+                        const monthDifference = today.getMonth() - dob.getMonth();
+
+                        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dob.getDate())) {
+                            age--;
+                        }
+
+                        if (age < 1) {
+                            hasErrors = true;
+                            errorMessages.push(`Passenger #${index + 1} must be at least 1 year old.`);
+                        }
+                    }
+                }
+            });
+
+            if (hasErrors) {
+                event.preventDefault();
+                errorMessageDiv.innerHTML = errorMessages.join('<br>');
+                errorMessageDiv.style.display = 'block';
+            }
+        });
+    });
+    </script>
+
+
+
+
+    <script>
+        var input = document.querySelector("#telephone_no_1");
+        var iti = window.intlTelInput(input, {
+            initialCountry: "us",
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+
+        input.form.addEventListener('submit', function() {
+            var countryCode = iti.getSelectedCountryData().dialCode;
+            document.querySelector("#country_code").value = countryCode;
+        });
+    </script>
+
+
+
+<script src="{% static '/js/bookingpro_itinerary_time.js' %}"></script>
+{% endblock %}

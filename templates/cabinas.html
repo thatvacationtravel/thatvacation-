@@ -1,0 +1,141 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Cabinas para {{ crucero.shipName }}</h1>
+
+    <div class="row">
+        {% for category_label, subranges in display_data.items %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <p>{{ category_label }}</p>
+                <div class="card-body">
+                  <h5 class="card-title">{{ category_label }}Precio:</h5>
+                  {% if lowest_prices_by_category and category_label%}
+                            {{ lowest_prices_by_category }}
+                        {% else %}
+                            No hay precio disponible
+                        {% endif %}
+                    <p class="card-text">Información sobre la cabina...</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-{{forloop.counter}}">
+                        Ver opciones
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+       
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="modelTitle-{{forloop.counter}}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modelTitle-{{forloop.counter}}">Opciones para {{ category_label }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            {% if subranges %}
+                            {% for subrange in subranges %}
+                            <li class="list-group-item">
+                                {% if subrange == 'Guaranteed' %}
+                                <i class="fa fa-map-marker-alt me-3"></i><strong>Cabina Garantizada</strong>
+                                <p style="font-size: 10px;">La línea de cruceros elige su cubierta y número de habitación en el momento del check-in.</p>
+                                {% else %}
+                                <i class="fa fa-map-marker-alt me-3"></i>Deck <a href="#" class="link-deck" data-categoria="{{ category_label }}" data-rango="{{ subrange }}">Deck {{ subrange }}</a>
+                                <p style="font-size: 10px;">El cliente puede elegir su cabina</p>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <li class="list-group-item">No hay cabinas disponibles en esta categoría.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="modal fade" id="modalCabinas" tabindex="-1" role="dialog" aria-labelledby="modalCabinasLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCabinasLabel">Cabinas Disponibles</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalCabinasBody">
+        <!-- Aquí se insertará el contenido dinámicamente -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+<script>
+// Asegúrate de que el DOM esté completamente cargado antes de añadir los listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Función para mostrar las cabinas disponibles para un rango de cubierta y categoría
+    function mostrarCabinasPorRango(categoria, rango) {
+        // Aquí, realiza la solicitud al servidor para obtener las cabinas disponibles
+        // Ajusta la URL de la solicitud según sea necesario para tu backend
+        var url = '{{ request.META.HTTP_REFERER }}'; // Reemplaza esto con la ruta real a tu API
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            data: {
+                'categoria': categoria,
+                'rango': rango
+            },
+            success: function(data) {
+                // Asumiendo que la respuesta del servidor es un array de objetos de cabinas
+                var contenidoModal = data.map(function(cabina) {
+                    return '<li class="list-group-item">Cabina ' + cabina.numero + ' - ' + cabina.descripcion + '</li>';
+                }).join('');
+
+                // Verifica si hay cabinas disponibles
+                if (!contenidoModal) contenidoModal = '<li class="list-group-item">No hay cabinas disponibles para este rango.</li>';
+
+                // Actualiza el contenido del modal y lo muestra
+                $('#modalCabinasBody').html(contenidoModal);
+                $('#modalCabinas').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al recuperar las cabinas: ", error);
+            }
+        });
+    }
+
+    // Añade event listeners a todos los enlaces de rango de cubierta
+    document.querySelectorAll('.link-deck').forEach(function(el) {
+        el.addEventListener('click', function(event) {
+            event.preventDefault(); // Previene la acción por defecto del enlace
+            var categoria = this.getAttribute('data-categoria');
+            var rango = this.getAttribute('data-rango');
+            mostrarCabinasPorRango(categoria, rango);
+        });
+    });
+});
+</script>
+
+{% endblock %}
+</body>
+
+</html>

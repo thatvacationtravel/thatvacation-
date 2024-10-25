@@ -1,0 +1,23 @@
+{
+  "name": "That Vacation Unforgettable Moments",
+  "short_name": "That Vacation",
+  "description": "That Vacation APP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "icons": [{"/static/iconos/icono.png", "sizes": "160x160"}]
+}
+
+{
+  "name": "That Vacation Unforgettable Moments",
+  "short_name": "That Vacation",
+  "description": "That Vacation APP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "icons": [{"/static/iconos/icono.png", "sizes": "144x144"}]
+  "purpose":"any"
+}
+

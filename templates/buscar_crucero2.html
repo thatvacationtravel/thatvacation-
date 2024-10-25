@@ -1,0 +1,240 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+      .tabs {
+      display: flex;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+  }
+
+  .tab-button {
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 5px 5px 0 0;
+      margin-right: 2px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  .tab-button:hover {
+      background-color: #e9ecef;
+  }
+
+  .tab-button.active {
+      background-color: white;
+      border-color: #ddd;
+      font-weight: bold;
+      border-bottom: 2px solid #0055a5; /* Para resaltar la pestaña activa */
+  }
+
+  .formulario {
+      position: relative;
+      background-color: #fff;
+      padding: 40px 20px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
+      margin-top: 30px; /* Ajusta esto para asegurar que las pestañas se alineen bien */
+  }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function mostrarFormulario(idFormulario) {
+            var formularios = document.querySelectorAll('.formulario');
+            formularios.forEach(function(formulario) {
+                formulario.style.display = 'none';
+            });
+            document.getElementById(idFormulario).style.display = 'block';
+        }
+
+        mostrarFormulario('formulario-cruceros'); // Mostrar por defecto el formulario de cruceros
+
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                mostrarFormulario(button.id.replace('btn-', 'formulario-'));
+            });
+        });
+    });
+
+
+</script>
+
+
+<div class="container my-5">
+    <div class="tabs-container">
+        <!-- Pestañas -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="cruceros-tab" data-toggle="tab" href="#cruceros">Cruceros</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="hoteles-tab" data-toggle="tab" href="#hoteles">Hoteles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="vuelos-tab" data-toggle="tab" href="#vuelos">Vuelos</a>
+            </li>
+        </ul>
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="cruceros" role="tabpanel" aria-labelledby="cruceros-tab">
+                <form id="cruiseSearchForm1" class="form" method="POST" data-url="{% url 'search_cruises' %}">
+                {% csrf_token %}
+                <div class="bg-white shadow" style="padding: 15px;">
+                    <div class="row g-2">
+                        <div class="col-md-10">
+                            <div class="row g-2">
+                                <div class="col-md-3">
+                                    <div class="date" id="date1" data-target-input="nearest">
+
+                                            {{form.departure_date}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="date" id="date2" data-target-input="nearest">
+
+                                            {{form.departure_end_date}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form">
+                                        <label for="{{ form.destination.id_for_label }}">Destino</label>
+                                        {{ form.destination }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form">
+                                        <label for="{{ form.adultos.id_for_label }}">Adultos</label>
+                                        {{ form.adultos }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form">
+                                        <label for="{{ form.ninos.id_for_label }}">Menores</label>
+                                        {{ form.ninos }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                {{form.errors}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="aubmit" class="btn btn-primary w-100">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="hoteles" role="tabpanel" aria-labelledby="hoteles-tab">
+                <h1>Formulario para hoteles</h1>
+            </div>
+            <div class="tab-pane fade" id="vuelos" role="tabpanel" aria-labelledby="vuelos-tab">
+                <h1>Formulario para Vuelos</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="search-results">
+    {% if cruise_data %}
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <h6 class="section-title bg-white text-center text-primary px-3">Resultados de Bùsqueda</h6>
+                    {% for cruise in cruise_data %}
+                        {% if forloop.last %}
+                        <h1 class="mb-5">Encontrados {{ forloop.counter }} </h1>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for cruise in cruise_data %}
+            <div class="col">
+                <div class="package-item">
+                    <div class="overflow-hidden">
+                        <h6 class="section-title bg-white text-center text-dark px-3">{{cruise.shipName}}</h6>
+                    </div>
+                    <div class="d-flex border-bottom">
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ cruise.itinDesc }}</small>
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>{{cruise.nights}} Nights</small>
+                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>{{ cruise.sailingPort}}</small>
+                    </div>
+                    <div class="text-center p-4">
+                        <h3 class="mb-0">Desde: ${{ cruise.oneAdult }}</h3>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                        </div>
+                            <p class="border-bottom">
+                               {{ cruise.fareStartDate }} - {{ cruise.fareEndtDate }}
+                               <br>
+
+                                detalles:{{cruise.detalles}}
+
+                            </p>
+                        <div class="d-flex justify-content-center mb-2">
+                        <a href="{% url 'seleccioncabinas' cruise_id=cruise.cruiseID itemcode=cruise.fareCode itemtype=cruise.category packagecode=cruise.priceType %}" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Seleccionar cabina</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+    {% endif %}
+</div>
+
+
+<script>
+    $('#search-button').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/search_cruises/',
+            data: $('#cruiseSearchForm1').serialize(),
+            success: function(data) {
+                // Muestra la respuesta JSON en la consola para depurar
+                console.log(data);
+
+                // Verifica si la respuesta contiene 'cruise_list_html'
+                if ('cruise_list_html' in data) {
+                    // Actualiza el contenido del div con los resultados
+                    $('#search-results').html(data.cruise_list_html);
+                } else {
+                    // Muestra un mensaje de error si la respuesta no es válida
+                    console.error('La respuesta no contiene cruise_list_html');
+                }
+            },
+            error: function(xhr, status, error) {
+                // Muestra un mensaje de error en caso de un error de solicitud
+                console.error('Error en la solicitud AJAX:', error);
+            }
+        });
+    });
+]
+</script>
+
+{% endblock %}
+
+
+<script>
+    const picker = new Litepicker({
+    element: document.getElementById('fecha1')
+  });
+</script>
+</body>
+</html>

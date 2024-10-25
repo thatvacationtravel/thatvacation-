@@ -1,0 +1,48 @@
+
+
+{% block content %}
+<div class="container">
+    <h2>Reserva y Pago</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <h1 class="mt-4 mb-4">Formulario de Booking</h1>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Reservar</button>
+    </form>
+
+    {% if booking_no %}
+    <!-- Paso 2: Pago -->
+    <div class="alert alert-success mt-4">
+        ¡Reserva exitosa! Número de reserva: {{ booking_no }}
+    </div>
+
+    <form method="post" action="{% url 'payment' booking_no=booking_no %}">
+        {% csrf_token %}
+
+        <!-- Detalles del pago -->
+        <div class="form-group">
+            <label for="creditCard">Tarjeta de Crédito</label>
+            <input type="text" name="credit_card" class="form-control" id="creditCard" required>
+        </div>
+        <!-- ... Otros campos relacionados con el pago ... -->
+
+        <button type="submit" class="btn btn-primary">Pagar</button>
+    </form>
+    {% endif %}
+
+    {% if payment_successful %}
+    <div class="alert alert-success mt-4">
+        ¡Pago realizado con éxito!
+    </div>
+    {% elif error %}
+    <div class="alert alert-danger mt-4">
+        Ha ocurrido un error: {{ error }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

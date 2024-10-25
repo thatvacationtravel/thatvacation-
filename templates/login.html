@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<style>
+    label{
+        display:none;
+    }
+</style>
+  <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row justify-content-center py-5">
+                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                       <div class="position-relative w-75 mx-auto animated slideInDown">
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="container smb-4 login">
+        <div class="form">
+            <center>
+                    <h2 class="to-animate fadeInUp animated">Login</h2>
+                <form class="form-signin" autocomplete="off" method="POST">
+                    {% csrf_token %}
+                    <center>
+                         {{ form.as_p }}
+                          {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+
+                    </center>
+
+                    <button class="btn btn-outline-primary w-100 py-3" type="submit">LOGIN</button>
+                </form>
+            </center>
+        </div>
+    </div>
+</div>
+{% endblock %}

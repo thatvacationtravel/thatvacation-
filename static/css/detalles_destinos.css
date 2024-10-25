@@ -1,0 +1,384 @@
+
+
+  body {
+  overflow-x: hidden;
+}
+
+.cabinas {
+    display: flex;
+    flex-wrap: wrap;
+    position: fixed; /* Cambia a fixed para un mejor control sobre la posición. */
+    top: 0; /* Inicia fuera de la pantalla. */
+    width: 50%; /* Establece un ancho fijo para las cabinas. */
+    height: 100vh; /* Asegura que ocupe toda la altura de la ventana. */
+    overflow-y: auto; /* Permite desplazamiento vertical si es necesario. */
+    background-color: rgba(255, 255, 255, 0.9);
+    transition: right 0.5s ease; /* Anima la propiedad right para el efecto de deslizamiento. */
+    z-index: 20; /* Asegura que se muestre por encima de otros contenidos. */
+    padding: 20px; /* Agrega algo de padding al contenedor de las cabinas. */
+}
+
+.cabina-card {
+    flex: 1 1 calc(33.333% - 40px); /* Ajusta para tener 3 elementos por fila con espacio. */
+    margin: 10px;
+}
+
+.boton-mostrar-cabinas {
+
+    z-index: 25; /* Asegura que el botón esté por encima del contenedor de cabinas. */
+
+}
+
+
+
+  .mitad-izquierda {
+    width: 100%; /* Resta el padding de 20px a cada lado */
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.966);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agrega un ligero efecto de sombra */
+    margin-top: 40px !important; /* Separación del borde superior */
+    margin: 0 auto;
+  }
+
+  .mitad {
+    width: 100%; /* Resta el padding de 20px a cada lado */
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.966);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Agrega un ligero efecto de sombra */
+    margin-top: 10px !important; /* Separación del borde superior */
+    margin: 0 auto;
+  }
+
+
+  /* Ajustes para dispositivos móviles */
+  @media (max-width: 768px) {
+    .mitad-izquierda {
+      max-width: 100%;
+    }
+  }
+
+      .cabinas {
+          display: block;
+      }
+
+ .galeria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px; /* Espacio entre las imágenes */
+}
+
+.imagen {
+    width: calc(20% - 10px); /* 20% de ancho para cada imagen con 10px de espacio entre ellas */
+    height: 100px; /* Altura de 100px */
+    object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo la proporción */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+
+.container {
+    display: ;
+    align-items: flex-start; /* Alinea los ítems al inicio del contenedor en el eje cruzado */
+    gap: 2px; /* Espacio entre los contenedores de imagen y texto */
+}
+
+.image-container {
+    flex: 1; /* Ocupa 1 fracción del espacio disponible */
+    max-width: 40%; /* Limita el ancho máximo del contenedor de imágenes */
+}
+
+.gallery-image {
+    width: 100%; /* Hace que las imágenes ocupen todo el ancho de su contenedor */
+    height: auto; /* Mantiene la proporción de las imágenes */
+    margin-bottom: 2px;
+}
+
+.text-container {
+    flex: 2; /* Ocupa 2 fracciones del espacio disponible, dando más espacio al texto que a las imágenes */
+    max-width: 60%; /* Limita el ancho máximo del contenedor de texto */
+}
+
+.title, .info, .price, .additional-info {
+    margin-bottom: 10px; /* Espaciado entre los elementos del texto */
+}
+
+.info i, .price {
+    color: #007bff; /* Color para íconos y precio, ajusta según tu paleta de colores */
+}
+
+.fecha-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fecha:first-child::after {
+    content: "—"; /* Carácter de em dash como separador */
+    margin: 0 10px; /* Espaciado alrededor del guion */
+    font-size: 24px; /* Ajusta el tamaño del guion */
+    font-weight: bold; /* Hace el guion más grueso */
+}
+
+
+.contenedor-cabinas {
+    display: flex;
+    flex-wrap: nowrap; /* No permitir que los elementos se envuelvan */
+    overflow-x: auto; /* Permitir desplazamiento horizontal */
+    padding-bottom: 15px;/* Espaciado inferior para asegurar que el contenido no se corte */
+    width: 100%;
+}
+
+.prueba-cabinas .slider {
+    display: flex;
+    flex-wrap: nowrap; 
+    width: 100%;
+}
+
+.elemento-cabina {
+    display: inline-block;
+    white-space: normal;
+    margin-right: 15px;
+}
+
+.card {
+    flex: 0 0 auto;
+    width: 250px;
+    margin: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.close {
+    color: rgb(52, 104, 247) !important;
+    top: 1px;          
+    left: 2px;         
+    background: transparent; 
+    border: none;       
+    font-size: 28px;    
+    cursor: pointer;    
+    z-index: 1100;
+    width: 10px;
+    
+}
+
+.close:hover,
+.close:focus {
+    color: #dc3545;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+    .col-md-3 {
+        flex: 0 0 calc(50.333% - 20px) !important;
+        max-width: calc(50.333% - 20px) !important;
+    }
+}
+
+@media (min-width: 991px) and (max-width: 1023px) {
+    .col-md-3 {
+        flex: 0 0 calc(30% - 10px) !important;
+        max-width: calc(30% - 10px) !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .col-md-3 {
+        flex: 0 0 calc(10% - 10px) !important;
+        max-width: calc(100% - 20px) !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .card {
+        flex: 1 1 calc(10% - 25px);
+        max-width: calc(100% - 25px);
+    }
+}
+
+.elemento-cabina p {
+    text-align: left; /* Asegura que el texto dentro de los párrafos esté alineado a la izquierda */
+    width: 100%; /* Hace que los párrafos ocupen todo el ancho disponible del contenedor */
+}
+
+
+.mitad1 {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.966);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 10px !important;
+        margin: 0 auto;
+
+    }
+
+.mitad2 {
+    display: flex;
+    justify-content: flex-end; /* Alinea el hijo a la derecha */
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.966);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    /* No se necesita overflow: hidden; con Flexbox, a menos que tengas un caso específico */
+}
+
+ .itinerary-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .main-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+    .secondary-images-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1px;
+    }
+
+    .secondary-image {
+        margin-top: 1px;
+        width: calc(50% - 1px); /* Ajusta el ancho de las imágenes secundarias */
+        height: auto; /* Altura de cada imagen secundaria */
+        object-fit: cover; /* Ajusta el tamaño de la imagen manteniendo la proporción */
+        border-radius: 5px; /* Bordes redondeados */
+        margin-bottom: 1px; /* Espacio entre las imágenes */
+    }
+
+    .col-6 {
+        flex: 0 0 calc(50% - 1px); /* Ajusta el ancho de las columnas */
+        max-width: calc(50% - 1px); /* Establece el ancho máximo de las imágenes secundarias */
+        margin-bottom: 1px; /* Espacio entre las columnas */
+        margin-top: 1px;
+        gap: 0px;
+    }
+
+    .col-6 img {
+        width: 100%; /* Ajusta el ancho de las imágenes al 100% del contenedor */
+        height: 150px; /* Ajusta la altura automáticamente para mantener la proporción */
+        border-radius: 5px; /* Bordes redondeados */
+        gap: 0px;
+
+    }
+
+    @media (max-width: 768px) {
+        .secondary-image {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+
+
+    @media (max-width: 768px) {
+    .contenedor-cabinas {
+        /* No uses display: flex aquí; deja que Slick controle la disposición de los elementos. */
+    }
+}
+
+
+@media (min-width: 768px) {
+    .categoria-cabina-desktop {
+        text-align: left;
+    }
+}
+
+
+
+.slick-prev, .slick-next {
+    color: #000; /* Cambia el color de los íconos de flecha */
+    font-size: 24px; /* Ajusta el tamaño del icono */
+    background-color: transparent; /* Fondo transparente */
+    border: none; /* Quita el borde */
+    outline: none; /* Quita el borde de enfoque */
+    position: absolute; /* Posición absoluta para superponer los botones */
+    top: 50%; /* Alinea verticalmente al centro */
+    transform: translateY(-50%); /* Alinea verticalmente al centro */
+    z-index: 1000; /* Asegura que los botones estén en la parte superior */
+}
+
+/* Estilos para el botón de flecha izquierda */
+.slick-prev {
+    left: 10px; /* Ajusta la posición izquierda */
+}
+
+/* Estilos para el botón de flecha derecha */
+.slick-next {
+    right: 10px; /* Ajusta la posición derecha */
+}
+
+
+    .ver-mas-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .ver-mas-btn:hover {
+        background-color: #0056b3;
+    }
+
+
+
+
+    
+
+
+
+
+
+
+
+
+    .cabin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 30px;
+        justify-items: center;
+      }
+      
+      .cabin-button {
+        background-color: #f0f0f0;
+        border: 2px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s;
+      }
+      
+      .cabin-button:hover {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+      }
+      
+      .cabin-button:focus {
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }

@@ -1,0 +1,10 @@
+{% for categoria, cabinas in categorias_cabinas.items %}
+    <h2>{{ categoria }}</h2>
+    <ul>
+        {% for cabina in cabinas %}
+            <li>Cabina Número: {{ cabina.number }}, Nombre de la Cubierta: {{ cabina.name }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+
+

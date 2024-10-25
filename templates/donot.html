@@ -1,0 +1,195 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+
+<link href="{% static 'css/experience.css'%}" rel="stylesheet">
+
+<style>
+    .switch-container {
+        display: flex;
+        align-items: center; /* Mantener los elementos alineados verticalmente */
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 23px;
+        margin-left: 10px; /* Espacio entre el texto y el interruptor */
+        vertical-align: middle; /* Alineación vertical */
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(24px);
+    }
+</style>
+
+
+
+
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+    <div class="container py-5">
+        <div class="row justify-content-center py-5">
+            <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                <div class="position-relative w-75 mx-auto animated slideInDown"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Do Not Sale My Personal Information</h6>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"></div>
+    </div>
+</div>
+
+<center>
+    
+    <button type="button" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;" onclick="openModal(1)">Do Not Sale My Personal Information ></button>
+</center>
+
+<!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <p id="modal-text"></p>
+    </div>
+</div>
+
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function openModal(id) {
+        event.stopPropagation();
+        const modal = document.getElementById("myModal");
+        const modalText = document.getElementById("modal-text");
+    
+        switch(id) {
+            case 1:
+                modalText.innerHTML = `
+                    <div class="modal-content-wrapper">
+                        <p><strong>Do Not Sale My Personal Information:</strong></p>
+                        <p>
+                            When you visit our website, we store cookies on your browser to collect information. 
+                            The information collected might relate to you, your preferences or your device, 
+                            and is mostly used to make the site work as you expect it to and to provide a more 
+                            personalized web experience. However, you can choose not to allow certain types of cookies, 
+                            which may impact your experience of the site and the services we are able to offer. 
+                            Click on the different category headings to find out more and change our default settings
+                            according to your preference. You cannot opt-out of our First Party Strictly Necessary 
+                            Cookies as they are deployed in order to ensure the proper functioning of our website 
+                            (such as prompting the cookie banner and remembering your settings, to log into your account,
+                            to redirect you when you log out, etc.). For more information about the First and Third Party<br>
+                            <a href="https://cookiepedia.co.uk/giving-consent-to-cookies" target="_blank">Cookies used please follow this link.</a>
+                        </p>
+                        <br>
+                        
+                        <br>
+                        <button type="button" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;" onclick="openModal(5)">Do Not Sale My Personal Information></button>
+                        <br>
+                        <br>
+                        
+                        
+                        </div>
+
+
+    
+                    </div>`;
+                break;
+                case 5:
+                modalText.innerHTML = `
+                    <div class="modal-content-wrapper">
+                        <p><strong>Do Not Sale My Personal Information:</strong></p>
+                        <div class="mitad">
+                            <p>
+                                When you visit our website, we may collect personal information like cookies, IP addresses, geolocation, etc. The information is used to provide you with a more personalized experience by adapting our content and advertising, providing social media features, and analyzing the behavior of our visitors.
+
+                                In some cases, the personal information may be shared with third-parties and qualify as a "sale of personal information" under the California Consumer Privacy Act (CCPA). You can exercise your right to opt-out of that sharing at any time below.
+                                Please note that, after opting out, you will still see ads and those ads may be less relevant to you. Additionally, your opt-out choice on this website will only apply to the current website.
+
+                                To learn more about interest-based advertising across sites and additional opt-out choices, please <a href="https://optout.networkadvertising.org/?c=1" target="_blank">visit the NAI Consumer Opt-out website.</a>
+                                If you do not opt out of interest-based advertising through the NAI website, you may still receive ads tailored to your interests based upon personal information (a) not sold by the current website; (b) sold to Downstream Participants at least ninety (90) days before you opted out; or (c) sold by other sources from which you have not opted out.
+
+                                You can learn more about the data that we collect and how we manage it in our privacy policy.
+                            </p>
+                            
+                            <div class="container mt-5">
+                                <div class="form-group text-center switch-container">
+                                    <p style="font-size:.8rem; color:red;" class="mb-0 mr-2">Do not Sale my personal Information</p>
+                                    <label for="customSwitch1" class="switch">
+                                        <input type="checkbox" id="customSwitch1" checked>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <br>
+                                <p>
+                                    <a href="{% static 'msc_deals_promo/CRUISE_WITH_DRINKS.pdf' %}" target="_blank">Terms & Conditions</a>
+                                </p>
+                            </div>
+                            <p>
+                                <button type="button" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;" onclick="openModal(1)">Return ></button>
+                            </p>
+                    </div>`;
+                break;
+            default:
+                modalText.innerHTML = `<div><p>Ventana desconocida.</p></div>`;
+        }
+    
+        modal.style.display = "block";
+    }
+    
+    document.getElementById("close-modal").onclick = function() {
+        const modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+    
+    window.onclick = function(event) {
+        const modal = document.getElementById("myModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+    
+    </script>
+
+{% endblock %}

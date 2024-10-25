@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+</head>
+<body>
+    <h1>Error</h1>
+    <p>Codigo de error: {{ mensaje_error}}</p>
+
+
+
+
+    <h1>Error en la Solicitud</h1>
+{% if error_details %}
+    <h2>Código de Estado: {{ error_details.status_code }}</h2>
+    <h3>Encabezados de Respuesta:</h3>
+    <pre>{{ error_details.response_headers }}</pre>
+    <h3>Cuerpo de Respuesta:</h3>
+    <pre>{{ error_details.response_body }}</pre>
+{% else %}
+    <p>{{ mensaje_error }}</p>
+{% endif %}
+
+
+
+
+</body>
+</html>

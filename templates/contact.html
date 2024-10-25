@@ -1,0 +1,142 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block search %}
+{% endblock search %}
+
+
+{% block content %}
+
+
+
+<style>
+  ::placeholder {
+        color: #666;
+        opacity: 1;
+    }
+
+
+
+  .form-control, .form-control:focus {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #0071a7; /* Borde de color azul */
+    border-radius: 0.3rem; /* Bordes más redondeados */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  #message {
+    height: 150px;
+  }
+</style>
+    <!-- Contact Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            {% if messages %}
+    <div class="alert alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Contact Us</h6>
+                <h1 class="mb-5">Need help planning the perfect vacation?</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <h5>Contact us</h5>
+                    <p style="font-size: 14px; color: black;" class="mb-4">We are here for any questions you may have. Call us or send a Whatsapp message to the number below to speak to our customer service.<br /> Mon-Fri: 8am - 6pm / Sat : 9am - 1pm </p>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
+                            <i class="fa fa-map-marker-alt text-white"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="text-primary">Office</h5>
+                            <p style="color: black;" class="mb-0">12150 Sw 128 Court Suite 102, Miami, FL, 33186 , USA</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
+                            <i class="fa fa-phone-alt text-white"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="text-primary">Phone</h5>
+                            <a href="tel:3054282518" class="me-3 text-black">
+                        <small class="me-3 text-black"><i class="fa fa-phone-alt me-2"></i>305 428 2518</small>
+                    </a>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary" style="width: 50px; height: 50px;">
+                            <i class="fa fa-envelope-open text-white"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="text-primary">Email</h5>
+                            <a href="mailto:booking@thatvacation.com" class="text-black">
+                        <small class="text-black"><i class="fa fa-envelope-open me-2"></i>booking@thatvacation.com</small>
+                    </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <iframe class="position-relative rounded w-100 h-100"
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2407.724250669856!2d-80.40481486786122!3d25.655717724785863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9c10cea155555%3A0x20b545d6e6fd06c2!2s12150%20SW%20128th%20Ct%20Suite%20102%2C%20Miami%2C%20FL%2033186!5e0!3m2!1ses!2sus!4v1710735403201!5m2!1ses!2sus" width="800" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-xxl py-5 destination">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Discount</h6>
+                <h1 class="mb-5">Discount Offers</h1>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-7 col-md-6">
+                    <div class="row g-3">
+                        <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
+                            <a class="position-relative d-block overflow-hidden" href="https://thatvacationtravel.com/destinations/Celebrity%20Beyond%20Junio%202025/10" target="_blank">
+                                <img class="img-fluid" src="{% static 'promo/CELEBRITY BEYOND.jpg' %}" alt="">
+                                <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">30% OFF</div>
+                                <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">Celebrity Beyond Cruise</div>
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
+                            <a class="position-relative d-block overflow-hidden" href="https://thatvacationtravel.com/destinations/Msc%20World%20Europa%20Marzo%202025/19" target="_blank">
+                                <img class="img-fluid" src="{% static 'promo/MSC WORLD EUROPA.jpg' %}" alt="">
+                                <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">25% OFF</div>
+                                <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">MSC World Europa Cruise</div>
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
+                            <a class="position-relative d-block overflow-hidden" href="https://thatvacationtravel.com/destinations/Norwegian%20Joy/52" target="_blank">
+                                <img class="img-fluid" src="{% static 'promo/NCL JOY.jpg' %}" alt="">
+                                <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">35% OFF</div>
+                                <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">NCL JOY Spring Breake Cruise</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
+                    <a class="position-relative d-block h-100 overflow-hidden" href="https://thatvacationtravel.com/destinations/Msc%20World%20America%20June%202025/29" target="_blank">
+                        <img class="img-fluid position-absolute w-100 h-100" src="{% static 'promo/MSC WORLD AMERICA.jpg' %}" alt="" style="object-fit: cover;">
+                        <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">20% OFF</div>
+                        <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">MSC World America Cruise</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Contact End -->
+
+{% endblock content %}

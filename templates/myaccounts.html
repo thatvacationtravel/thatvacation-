@@ -1,0 +1,772 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    #menu-bar {
+    display: none !important;
+}
+
+    @media (max-width: 767px) {
+        #menu-bar {
+            display: flex !important;;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #f8f9fa;
+            z-index: 1000;
+        }
+
+        #sidebarContent {
+            display: none;
+        }
+    }
+
+    .logo-container .logo {
+        max-height: 80px;
+    }
+
+    .menu-text {
+        font-size: 14px;
+        font-weight: bold;
+        color: #1a1a1a;
+    }
+
+    .menu-icon {
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+
+    .price_max {
+        margin-left: 1px !important;
+        padding-left: 30px !important;
+        position: relative;
+        float: left;
+        margin-bottom: 0px !important;
+    }
+</style>
+
+<body>
+<link href="{% static 'css/myaccount.css' %}" rel="stylesheet">
+
+
+    <div id="loading-overlay">
+        <div class="spinner-border" role="status">
+            <span class="spinner-text">TvT</span>
+        </div>
+    </div>
+
+
+
+<div class="container-fluid mt-3">
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+</div>
+    <div class="container-fluid mt-3">
+        <div id="form-errors" class="alert alert-danger" style="display: none;"></div>
+        <div class="row">
+            <!-- Barra Lateral con Botones -->
+            <div class="col-md-3 sidebar-container">
+                <div class="fixed-top custom-nav bg-light d-flex justify-content-between align-items-center px-3" id="menu-bar">
+                    <!-- Logo a la izquierda -->
+                    <div class="logo-container">
+                    <a href="/">
+                        <img src="{% static 'img/logo_oficial1.png'%}" alt="That Vacation" class="logo">
+                    </a>
+                    </div>
+                    <div class="menu-toggle-container d-flex align-items-center">
+                        <span class="menu-text me-2" id="menu-toggle-text"></span>
+                        <span class="menu-icon" id="menu-toggle">☰</span>
+                    </div>
+                </div>
+                <div class="dropdown" id="sidebarContent">
+                    <div class="d-flex flex-column align-items-center mb-3">
+                        <img src="{{ request.user.profile_picture.url }}" alt="Profile picture" style="max-width: 60px; max-height: 60px; border-radius: 50%;">
+                        <p class="text-center">{{ request.user.agency }}</p>
+                    </div>
+                    <button id="btn-buscar-cruceros-hoteles" class="btn btn-primary w-100 mb-3">Bookings</button>
+                    <button class="btn btn-primary w-100 mb-3" id="btn-history">Manage Bookings</button>
+                    <button class="btn btn-primary w-100 mb-3" id="btn-perfil">Update Profile</button>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <a href="/cancelation/" class="btn btn-primary w-100 mb-3" id="btn-cancelation">Cancelations</a>
+                    {% endif %}
+
+                    <a href="/logout/" class="btn btn-primary w-100 mb-3">Logout</a>
+                </div>
+
+                <div class="container">
+
+                    <div style="font-size: .8rem;" id="ship-filter-container"></div>
+                </div>
+            </div>
+
+
+
+            <!-- Contenido Principal -->
+            <div class="col-md-9">
+                <div id="history" class="contenido-seccion" style="display: none; height:auto;">
+                    <div style="text-align: center;">
+                        <div style="background-color: rgba(0, 123, 255, 0.7); padding: 10px; display: inline-flex; align-items: center; border-radius: 5px; width: fit-content; margin: 0 auto;">
+                            <a id="pay-booking-btn" class="btn btn-outline" style="margin-right: 10px; font-size: .8rem; font-family: Arial;">My Bookings</a>
+                            <p style="margin: 0; color: white;">|</p>
+                            <a id="commission-stats-btn" class="btn btn-outline" style="margin-left: 10px; font-size: .8rem;">Commission Statistics</a>
+                            <p style="margin: 0; color: white;">|</p>
+                            <a id="commission-details-btn" class="btn btn-outline" style="margin-left: 10px; font-size: .8rem;">Desglose Comision</a>
+                            <p style="margin: 0; color: white;">|</p>
+                            <a id="commission-beneffits-btn" class="btn btn-outline" style="margin-left: 10px; font-size: .8rem;">Beneffits</a>
+                        </div>
+                    </div>
+
+                        <div id="pay-booking" class="contenido-seccion" style="display: none;">
+                            <div class="container">
+
+                            </div>
+                            <div class="content-wrapper container my-5">
+                                <form id="search-form" method="get" action="{% url 'search_bookings' %}">
+                                    {% csrf_token %}
+                                    <input type="text" name="query" placeholder="Search bookings or Passenger">
+                                    <br>
+                                    <button class="btn btn-success" type="submit">Search</button>
+                                </form>
+
+                                <div id="search-results" class="mt-4"></div>
+                                <div class="container">
+                                    <div class="container">
+                                            <center><h3></h3></center>
+                                            <br>
+                                            <div class="step-by-step">
+                                                <!-- Paso 1 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-sign-in-alt"></i> <!-- Icono de acceso -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 1: Search for a reservation </h5>
+                                                        <p>by name or reservation number</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Paso 2 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-search"></i> <!-- Icono de búsqueda -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 2: Make an additional payment</h5>
+                                                        <p>Make an additional payment.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Paso 3 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-info-circle"></i> <!-- Icono de información -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 3: Download the invoice</h5>
+                                                        <p>Download the invoice before payment.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <br>
+                                <button id="load-more" class="btn btn-success" style="display: none;">More Results</button>
+
+                            </div>
+                        </div>
+
+                        <div id="commission-stats" class="contenido-seccion" style="display: none;">
+                            <div class="container">
+                                <div style="width: 100%; height: 100%; max-width: 800px; margin: auto;">
+                                    {{ graph_html|safe }}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="commission-details" class="container my-5" style="display: none;">
+                            <p><span style="font-weight: bold;">* The commission is based on the total price - taxes - no commission fee.</span>
+                                <span style="color:#2632e2">Ex: $1000(Total Amount) - $100(PCH) - $150(NCF) = $750 X 10% = $75 COMMISSION</span>
+                            </p>
+                            <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    {% if request.user.is_staff %}
+                                        <th>Username</th>
+                                    {% endif %}
+                                    <th>Booking Number</th>
+                                    <th>Earning</th>
+                                    <th>Create Date</th>
+                                    <th>Pay Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for earning in my_earnings %}
+                                    <tr>
+                                        {% if request.user.is_staff %}
+                                            <td>{{ earning.username }}</td>
+                                        {% endif %}
+                                        <td>{{ earning.booking_no }}</td>
+                                        <td>{{ earning.comission_agent }}</td>
+                                        <td>
+                                            {% if earning.invoice_date %}
+                                                {{ earning.invoice_date }}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if earning.pay_date %}
+                                                {{ earning.pay_date }}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Total</th>
+                                    <th>{{ total_earnings }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        </div>
+                        <div id="commission-beneffits" class="container my-5" style="display: none;">
+                            <div class="table-container">
+                                <table border="1" cellpadding="10" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">COMMISSION & PAYMODEX</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Commission Amount</th>
+                                        <th>Gross Sailed Revenue Tier</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>10%</td>
+                                        <td>$0 - $99,999</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11%</td>
+                                        <td>$100,000 - $150,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>12%</td>
+                                        <td>$150,000 - $200,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>13%</td>
+                                        <td>$200,000 - $250,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>14%</td>
+                                        <td>$250,000 - $300,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>15%</td>
+                                        <td>$300,000 - $350,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>16%</td>
+                                        <td>$350,000 - $499,999</td>
+                                    </tr>
+                                    <tr>
+                                        <td>17%</td>
+                                        <td>$500,000+</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table border="1" cellpadding="10" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th colspan="2">Pre-Booked Commission Ancillaries Items</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Commission Rate</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Transfers</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Hotel Packages</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shore Excursions</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Air Flights</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Beverage Packages</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Specialty Restaurants</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stateroom Celebration Amenities</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Spa Treatments</td>
+                                        <td>5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CSA Travel Protection</td>
+                                        <td>10%</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr />
+                            <div class="container">
+                                <h3 class="text-center">Free Cruise.</h3>
+                                    <div class="main" style="background-color: rgb(207 204 213 / 15%);">
+                                    <p class="text-center">
+
+                                        <i class="fas fa-check"></i> 3 free nights MSC cruise for 2 people (Sales over $100k)<br>
+
+                                        <i class="fas fa-check"></i> 4 free nights MSC cruise for 2 people (Sales over $150k)<br>
+
+                                        <i class="fas fa-check"></i> 7 free nights MSC cruise for 2 people (Sales over $200k)<br>
+
+                                    </p>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                <div id="profile" class="contenido-seccion container my-5" style="display: none;">
+                    <h3>Update Profile</h3>
+                    <div class="form-group text-center">
+                                <img id="profile-picture-preview" src="{{ user.profile_picture.url }}" alt="Imagen de perfil" style="max-width: 100px; height: auto; padding: 15px; border-radius: 50%;"/>
+                            </div>
+                    <form id="main-form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+
+                            {{ form.profile_picture }}
+                            <input type="file" id="id_profile_picture" name="profile_picture" style="display: none;" onchange="previewImage(event)">
+
+                        </div>
+
+                        <div class="form-group">
+                            {{ profile_form.first_name }}
+                        </div>
+                        <div class="form-group">
+                            {{ profile_form.agency }}
+                        </div>
+                        <div class="form-group">
+                            {{ profile_form.phone }}
+                        </div>
+                        <div class="form-group">
+                            {{ profile_form.email }}
+                        </div>
+                        <div class="form-group">
+                            {{ profile_form.direccion }}
+                            <input type="hidden" name="form_type" value="update_profile" />
+                        </div>
+
+                        <div class="text-center" style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <button type="submit" name="action" value="update_profile" class="btn btn-primary update"
+                                    style="padding: 10px 16px; font-size: 14px; width: auto; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                Update Profile
+                            </button>
+                            <label for="id_profile_picture" class="btn btn-outline"
+                                   style="padding: 10px; cursor: pointer; height: 40px; width: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px;">
+                                <i class="fa fa-camera icon-camera" style="font-size: 16px;"></i>
+                            </label>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div id="formulario-busqueda" class="contenido-seccion" style="width:100%;">
+                    <div class="container my-8">
+                        <div class="tabs-container">
+                            <!-- Pestañas -->
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="cruceros-tab" data-toggle="tab" href="#cruceros">Cruises</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="hoteles-tab" data-toggle="tab" href="#hoteles">Hotels</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="vuelos-tab" data-toggle="tab" href="#vuelos">Flight</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="tours-tab" data-toggle="tab" href="#tours">Tours</a>
+                                </li>
+                            </ul>
+                            {% if tours_data %}
+                            <div>
+                                <h2>Tours Disponibles</h2>
+                                {% for tour in tours_data %}
+                                    <p>{{ tour.nombre }} - {{ tour.descripcion }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                            <!-- Contenido de las pestañas -->
+                            <div class="tab-content" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="cruceros" role="tabpanel" aria-labelledby="cruceros-tab">
+                                            <form id="cruiseSearchForm1" class="form-group" method="POST" action="{% url 'myaccounts' %}">
+                                                {% csrf_token %}
+                                                <div class="bg-white shadow" style="padding: 25px;">
+                                                    <div class="row g-2">
+                                                        <div class="col-md-12">
+                                                            <div class="row g-2">
+                                                                <div class="col-md-2">
+                                                                    <div class="date" id="date1" data-target-input="nearest">
+                                                                        <input type="text" id="daterange" class="form-control" readonly />
+                                                                        <i class="fas fa-calendar-alt calendar-icon"></i>
+                                                                        <input type="hidden" id="hidden-daterange" name="hidden-daterange">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3">
+                                                                    <div class="form">
+
+                                                                        <div class="input-group">
+                                                                            {{ form.destination }}
+                                                                            <button type="button" class="btn btn-outline-secondary dropdown-button" data-target="id_destination">&#9660;</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form">
+
+                                                                        <div class="input-group">
+                                                                            {{ form.port }}
+                                                                            <button type="button" class="btn btn-outline-secondary dropdown-button" data-target="id_port">&#9660;</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <input type="text" id="adults-children-input" placeholder="Adults & Children" readonly style="cursor: pointer;" onclick="openModal()">
+                                                                </div>
+
+                                                                <div style="margin-top: 10px;" class="col-md-2 d-flex align-items-top">
+                                                                    <button
+                                                                        style="margin-right: 5px; margin-left: 5px; margin: 0; padding: 1.25rem; border-radius: 5px; width: 95px; height: 40px; display: flex; align-items: center; justify-content: center;"
+                                                                        type="submit"
+                                                                        id="search-button"
+                                                                        name="action"
+                                                                        value="search_cruise"
+                                                                        class="btn btn-primary">
+                                                                        <i class="fas fa-search" style="font-size: 16px;"></i>&nbsp;search
+
+                                                                    </button>
+
+                                                            </div>
+
+                                                                <!-- Modal -->
+                                                                <div id="modal" class="modal" style="display: none;">
+                                                                    <div class="modal-content">
+                                                                        <span class="close" onclick="closeModal()">&times;</span>
+                                                                        <p id="error-message" style="color: red; display: none;"></p>
+                                                                        <div class="row">
+                                                                            <div class="col-md-4">
+                                                                                <div class="form">
+                                                                                    <div class="input-group">
+                                                                                        <button type="button" id="decrement-adultos" class="btn btn-outline-secondary" onclick="updateValue('id_adultos', -1)">-</button>
+                                                                                        {{ form.adultos }}
+                                                                                        <button type="button" id="increment-adultos" class="btn btn-outline-secondary" onclick="updateValue('id_adultos', 1)">+</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-4" id="children-container">
+                                                                                <div class="form">
+                                                                                    <div class="input-group">
+                                                                                        <button type="button" id="decrement-ninos" class="btn btn-outline-secondary" onclick="updateValue('id_ninos', -1)">-</button>
+                                                                                        {{ form.ninos }}
+                                                                                        <button type="button" id="increment-ninos" class="btn btn-outline-secondary" onclick="updateValue('id_ninos', 1)">+</button>
+                                                                                    </div>
+                                                                                    <input type="hidden" name="form_type" value="search_cruise" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <a class="done-btn" onclick="closeModal()">Done</a>
+
+
+                                                                            <div id="child-ages" style="display: none;">
+                                                                                <div class="col-md-2">
+                                                                                    <label for="child1_age">Child 1 age </label>
+                                                                                    <select name="child1_age" id="child1_age" class="form-control" required>
+                                                                                        <option value="" disabled selected>Child 1 age *</option>
+                                                                                        {% for age in ages %}
+                                                                                            <option value="{{ age }}">{{ age }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-md-2" id="child2-age-container" style="display: none;">
+                                                                                    <label for="child2_age">Child 2 age</label>
+                                                                                    <select name="child2_age" id="child2_age" class="form-control">
+                                                                                        <option value="" disabled selected>Child 2 age *</option>
+                                                                                        {% for age in ages %}
+                                                                                            <option value="{{ age }}">{{ age }}</option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                {{ form.errors }}
+                                                                            </div>
+                                                                        </div>
+                                                                        <br>
+                                                                        <a class="done-btn1" onclick="closeModal()">Done</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </form>
+
+                                        <div style="font-size: .8rem;" id="ship-filter-container"></div><br>
+                                        <div style="" id="search-results-cruceros"></div>
+                                        <script>
+                                            window.addEventListener('load', function() {
+                                                function moveFilterContainer() {
+                                                    const shipFilterContainer = document.getElementById('ship-filter-container');
+                                                    const searchResultsCruceros = document.getElementById('search-results-cruceros');
+
+                                                    if (window.innerWidth <= 768) {
+                                                        if (searchResultsCruceros && shipFilterContainer) {
+                                                            searchResultsCruceros.parentNode.insertBefore(shipFilterContainer, searchResultsCruceros);
+                                                        }
+                                                    }
+                                                }
+                                                moveFilterContainer();
+
+                                                window.addEventListener('resize', moveFilterContainer);
+                                            });
+                                        </script>
+                                        <br>
+                                        <div class="container-xxl py-5 destination">
+                                            <div class="container">
+                                                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                                                    <h6 class="section-title bg-white text-center text-primary px-3">Discount</h6>
+                                                    <h1 class="mb-5">Discount Offers</h1>
+                                                </div>
+                                                <div class="custom-grid"> <!-- Nueva clase para el grid de imágenes -->
+                                                    <!-- Primera imagen -->
+                                                    <div class="custom-grid-item">
+                                                        <a class="position-relative custom-image-container" href="https://thatvacationtravel.com/destinations/Celebrity%20Beyond%20Junio%202025/10" target="_blank">
+                                                            <img class="custom-image" src="{% static 'promo/CELEBRITY BEYOND.jpg' %}" alt="">
+                                                            <div class="custom-discount-label">30% OFF</div>
+                                                            <div class="custom-cruise-name">Celebrity Beyond Cruise</div>
+                                                        </a>
+                                                    </div>
+
+                                                    <!-- Segunda imagen -->
+                                                    <div class="custom-grid-item">
+                                                        <a class="position-relative custom-image-container" href="https://thatvacationtravel.com/destinations/Msc%20World%20Europa%20Marzo%202025/19" target="_blank">
+                                                            <img class="custom-image" src="{% static 'promo/MSC WORLD EUROPA.jpg' %}" alt="">
+                                                            <div class="custom-discount-label">25% OFF</div>
+                                                            <div class="custom-cruise-name">MSC World Europa Cruise</div>
+                                                        </a>
+                                                    </div>
+
+                                                    <!-- Tercera imagen -->
+                                                    <div class="custom-grid-item">
+                                                        <a class="position-relative custom-image-container" href="https://thatvacationtravel.com/destinations/Norwegian%20Joy/52" target="_blank">
+                                                            <img class="custom-image" src="{% static 'promo/NCL JOY.jpg' %}" alt="">
+                                                            <div class="custom-discount-label">35% OFF</div>
+                                                            <div class="custom-cruise-name">NCL JOY Spring Break Cruise</div>
+                                                        </a>
+                                                    </div>
+
+                                                    <!-- Cuarta imagen -->
+                                                    <div class="custom-grid-item">
+                                                        <a class="position-relative custom-image-container" href="https://thatvacationtravel.com/destinations/Msc%20World%20America%20June%202025/29" target="_blank">
+                                                            <img class="custom-image" src="{% static 'promo/MSC WORLD AMERICA.jpg' %}" alt="">
+                                                            <div class="custom-discount-label">20% OFF</div>
+                                                            <div class="custom-cruise-name">MSC World America Cruise</div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="container">
+                                            <center><h3>Access your agency</h3></center>
+                                            <br>
+                                            <div class="step-by-step">
+                                                <!-- Paso 1 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-sign-in-alt"></i> <!-- Icono de acceso -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 1: Access your agency panel</h5>
+                                                        <p>Log in to your agency panel and explore the website.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Paso 2 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-search"></i> <!-- Icono de búsqueda -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 2: Search for the product</h5>
+                                                        <p>Search for the product you need and check the real-time availability.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Paso 3 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-info-circle"></i> <!-- Icono de información -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 3: Review product details</h5>
+                                                        <p>Read the detailed description, cancellation policy, and final price of the product.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Paso 4 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-credit-card"></i> <!-- Icono de pago -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 4: Make the payment</h5>
+                                                        <p>Make the payment, and receive immediate confirmation.</p>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Paso 5 -->
+                                                <div class="step">
+                                                    <div class="icon">
+                                                        <i class="fas fa-file-invoice"></i> <!-- Icono de factura -->
+                                                    </div>
+                                                    <div class="step-text">
+                                                        <h5>Step 5: Invoice for your client</h5>
+                                                        <p>Download the invoice for the activity to share with your client.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div class="tab-pane fade" id="vuelos" role="tabpanel" aria-labelledby="vuelos-tab">
+                                            <h1>Formulario para Vuelos</h1>
+                                        </div>
+                                        <div class="tab-pane fade" id="tours" role="tabpanel" aria-labelledby="tours-tab">
+                                            <h1>Formulario para Tours</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+    <script src ="{% static 'js/myaccounts_display_commision_others.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_display_commision.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_secciones_form.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_date_range.js' %}"></script>
+    <script src ="{% static 'js/myaccount_search_date.js' %}"></script>
+    <script src ="{% static 'js/myaccount_input_slide.js' %}"></script>
+    <script src ="{% static 'js/device.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_modal_children.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_ports.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_booking_number.js' %}"></script>
+    <script src ="{% static 'js/myaccounts_preview_image_profile.js' %}"></script>
+
+
+
+</body>
+
+
+
+
+
+<script>
+    $(document).ready(function() {
+        $('.tab-button').click(function() {
+            $('.tab-button').removeClass('active');
+            $(this).addClass('active');
+
+            $('[class^="resultados-"]').hide();
+
+            var target = $(this).attr('id').replace('btn-', '');
+            $('.resultados-' + target).show();
+
+            $('[id^="search-results-"]').empty();
+        });
+    });
+</script>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const adultosInput = document.getElementById('id_adultos');
+    if (adultosInput) {
+        adultosInput.setAttribute('readonly', true);
+    }
+
+    const ninosInput = document.getElementById('id_ninos');
+    if (ninosInput) {
+        ninosInput.setAttribute('readonly', true);
+    }
+
+    const dateInput = document.getElementById('daterange');
+    if (dateInput) {
+        dateInput.setAttribute('readonly', true);
+    }
+});
+</script>
+
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        var sidebarContent = document.getElementById("sidebarContent");
+
+        // Alternar la visibilidad del contenido del menú
+        if (sidebarContent.style.display === "none" || sidebarContent.style.display === "") {
+            sidebarContent.style.display = "block";
+        } else {
+            sidebarContent.style.display = "none";
+        }
+    });
+</script>
+
+{% endblock %}

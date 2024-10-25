@@ -1,0 +1,59 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block search %}
+{% endblock %}
+
+
+{% block content %}
+<link href="{% static 'css/detalles_destinos.css'%}" rel="stylesheet">
+<br>
+<div class="container">
+      <div class="container">
+        <div class="mitad">
+            <div class="container mt-5">
+                <div class="alert alert-info" role="alert">
+                    Your payment has been successful:<br>
+                    You will receive an email with your invoice or you can go to Manager booking to download your invoice.<br>
+                    You can also contact <a href="tel:+13054282518">+1 305 428 2518</a>.
+                </div>
+                <div class="card-flex">
+                    <div class="card-header bg-primary text-white text-center">
+                       {{crucero.shipName}}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-left text-center">Order: TVT-{{identifaction}}</h5>
+                        <br>
+                        <div class="row text-center">
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-muted">Total Paid</h6>
+                                <p>${{payment_amount}}</p>
+
+                            </div>
+                            <div class="col-md-6">
+                                    <h6 class="card-subtitle mb-2 text-muted">Balance</h6>
+                                    <p>${{booking_balance}}</p>
+                            </div>
+                        </div>
+
+
+                        <div class="text-center">
+                        {% if user.is_authenticated %}
+                            <a href="/" class="btn btn-outline-primary">Go to Home</a>
+                        {% else %}
+                            <a href="/register" class="btn btn-outline-primary">Register</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Pasajeros -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
+            <div class="container py-5">
+                <div class="row justify-content-center py-5">
+                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                       <div class="position-relative w-75 mx-auto animated slideInDown">
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Resultados de Bùsqueda</h6>
+            {% for cruise in cruise_data %}
+            {% if forloop.last %}
+            <h1 class="mb-5">Encontrados {{ forloop.counter }} </h1>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for cruise in cruise_data %}
+            <div class="col">
+                <div class="package-item">
+                    <div class="overflow-hidden">
+                        <h6 class="section-title bg-white text-center text-dark px-3">{{cruise.shipname}}</h6>
+                    </div>
+                    <div class="d-flex border-bottom">
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ cruise.itinerario }}</small>
+                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>{{cruise.dias}} Nights</small>
+                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>{{ cruise.puerto_desemb}}</small>
+                    </div>
+                    <div class="text-center p-4">
+                        <h3 class="mb-0">Desde: ${{ cruise.precio }}</h3>
+                        <div class="mb-3">
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                            <small class="fa fa-star text-light"></small>
+                        </div>
+                            <p class="border-bottom">
+                               {{ cruise.salida }} - {{ cruise.regreso }}
+                               <br>
+                                detalles:{{cruise.detalles}}
+                            </p>
+                        <div class="d-flex justify-content-center mb-2">
+
+                        <a href="{% url 'seleccioncabinas' cruise_id=cruise.cruise_id itemcode=cruise.itemcode itemtype=cruise.itemtype packagecode=cruise.packagecode %}" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Seleccionar cabina</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        // Controlador de eventos para el botón "Booking Request"
+        $('#booking-request-button').on('click', function () {
+            // Obtener la URL de selección de cabinas
+            var cruiseID = $(this).data('cruise-id');
+            var seleccionarCabinasURL = "{% url 'seleccionar_cabinas' cruise_id='__CRUISE_ID__' %}".replace('__CRUISE_ID__', cruiseID);
+
+            // Redirigir a la página de selección de cabinas
+            window.location.href = seleccionarCabinasURL;
+        });
+    });
+</script>
+
+<script>
+        var picker = new Pikaday({ field: document.getElementById('date') });
+</script>
+
+</html>

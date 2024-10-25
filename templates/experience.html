@@ -1,0 +1,1670 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load custom_filters %}
+{% load custom_tags %}
+{% block search %}
+{% endblock %}
+
+
+{% block content %}
+<link href="{% static 'css/detalles_destinos.css'%}" rel="stylesheet">
+<link href="{% static 'css/deslizantes_card.css'%}" rel="stylesheet">
+<link href="{% static 'css/experience.css'%}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+<style>
+
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+ul li span {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1em;
+}
+
+ul li span i {
+    margin-right: 10px;
+    font-size: 1.5em;
+    color: #007BFF;
+}
+
+ul li .text {
+    color: #000;
+}
+
+ul li {
+    margin-bottom: 15px;
+}
+
+@media (max-width: 600px) {
+    ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+
+.fixed {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    background-color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.custom-icon {
+    font-size: 1.2em;
+    color: #1E90FF;
+    margin-right: 8px;
+    }
+
+.main-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    background: #000;
+}
+
+.main-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.truncated-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    transition: max-height 1.3s ease;
+    max-height: calc(1.2em * 4);
+}
+
+.expanded-text {
+    max-height: none;
+    -webkit-line-clamp: unset;
+    overflow: visible; /
+}
+
+.interactive-button .read-more-btn {
+    position: relative;
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: underline;
+    padding: 0;
+    visibility: visible;
+    text-decoration: none;
+}
+
+.interactive-button:hover .read-more-btn,
+.interactive-button.selected .read-more-btn {
+    color: blue;
+    visibility: visible;
+    opacity: 1;
+}
+
+@media (max-width: 767px) {
+    .read-more-btn {
+        color: blue;
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+
+.title-cabin {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+    padding-left: 15px;
+}
+
+
+
+.btn-choice-room:hover {
+    background-color: #1E90FF;
+    transform: scale(1.05);
+}
+
+
+</style>
+<div class="contenedor-principal">
+<div id="main-content" class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="mitad">
+        <h5>Contact Us</h5>
+        <p style="font-size: 14px;" class="text-dark">
+            If you have any questions or would like personalized assistance booking your trip, contact a That Vacation travel agent today.
+        </p>
+        <p>
+            <a style="font-size: 12px; float: right;" href="whatsapp://send?phone=+13054282518"><img style="width: 24px; height: 24px;" src="{% static 'images/watsaap.svg' %}" />Request a consultation</a>
+            <a style="font-size: 12px; float: left;" href="tel:+13054282518"><img src="{% static 'images/telefono.svg' %}" style="width: 14px; height: 14px;" />+1-305-428-2518</a>
+        </p>
+        <br>
+    </div>
+</div>
+
+<div id="main-content" class="container">
+<div class="mitad1">
+    <div class="row g-2 pt-2">
+        <div class="col-lg-6 col-md-6">
+            <div class="main-video">
+                <iframe
+                    src="https://www.youtube.com/embed/uAKi09ZR4pQ"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <!-- Contenedor de imágenes secundarias -->
+            <div class="d-flex flex-wrap">
+
+                <div class="col-6">
+                    <a href="{{ imagen.imagen3.url }}" data-lightbox="gallery">
+                    <img class="img-fluid bg-light p-1 secondary-image" src="" alt="{{ crucero.shipName }}" id="shipImage1">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="{{ imagen.imagen4.url }}" data-lightbox="gallery">
+                        <img class="img-fluid bg-light p-1 secondary-image" src="" alt="{{ crucero.shipName }}" id="shipImage2">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="{{ imagen.imagen5.url }}" data-lightbox="gallery">
+                        <img class="img-fluid bg-light p-1 secondary-image" src="" alt="{{ crucero.shipName }}" id="shipImage3">
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="{{ imagen.imagen6.url }}" data-lightbox="gallery">
+                        <img class="img-fluid bg-light p-1 secondary-image" src="" alt="{{ crucero.shipName }}" id="shipImage4">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div id="overlay">
+        <div class="spinner-border" role="status">
+            <span class="spinner-text">TvT</span>
+        </div>
+    </div>
+
+
+
+
+<div id="main-content" class="container">
+<div class="mitad1">
+    <div class="row g-2 pt-2">
+        <div class="col-lg-6 col-md-6">
+            <div class="main-image">
+               <a href="https://www.msccrociere.it/images/msc/iti/itin/{{crucero.itinCd}}.jpg" data-lightbox="gallery1">
+                <img style="border-radius: 5px; width: 100%;" src="" alt="{{ crucero.shipName }}" id="shipImage">
+            </a>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+
+            <div class="d-flex flex-wrap">
+                <div class="col-6">
+                    <h6 class="title">{{ crucero.shipName }}</h6>
+
+                </div>
+                <div style="width: 100%;">
+                    <p style="font-size: 12px;"><i class="fa fa-calendar-alt text-primary"></i><span class="fecha">&nbsp;{{ crucero.sailingDate }}</span></p>
+                    <p style="font-size: 12px;"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ crucero.itinDesc }}</p>
+                </div>
+                <div class="col-6">
+                    <i class="fa fa-calendar-alt text-primary"></i>&nbsp;{{ crucero.nights }}Night
+                </div>
+                {% if precios_cabinas %}
+                    <div class="d-flex align-items-center">
+                        <svg style="width:24px; height:24px; margin-right: 10px;" class="uitk-icon" aria-hidden="true" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path fill="#0071a7" fill-rule="evenodd" d="M10.99 8A3 3 0 1 1 5 8a3 3 0 0 1 6 0zm8 0A3 3 0 1 1 13 8a3 3 0 0 1 6 0zM8 13c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm7.03.05c.35-.03.68-.05.97-.05 2.33 0 7 1.17 7 3.5V19h-6v-2.5c0-1.48-.81-2.61-1.97-3.45z" clip-rule="evenodd"></path></svg>1-{{ precios_cabinas.0.pax }}
+
+                    </div>
+                {% endif %}
+            </div>
+            <hr />
+            <div id="main-content1">
+               <h6>What's included</h6>
+                <p style="font-size: 12px;">
+                    These are already included in the cost of your cruise.
+                </p>
+                <ul>
+                    {% if cruceros_misma_categoria %}
+                    <li>
+                        <svg style="width: 24px; height:24px;" class="uitk-icon" aria-describedby="local_dining-description" aria-label="AMENITY" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <title id="local_dining-title">AMENITY</title>
+                            <desc id="local_dining-description">AMENITY</desc>
+                            <path fill="#0071a7" fill-rule="evenodd" d="M20.15 10.15c-1.59 1.59-3.74 2.09-5.27 1.38L13.41 13l6.88 6.88-1.41 1.41L12 14.41l-6.89 6.87-1.41-1.41 9.76-9.76c-.71-1.53-.21-3.68 1.38-5.27 1.92-1.91 4.66-2.27 6.12-.81 1.47 1.47 1.1 4.21-.81 6.12zm-9.22.36L8.1 13.34 3.91 9.16a4 4 0 0 1 0-5.66l7.02 7.01z" clip-rule="evenodd"></path>
+                        </svg>
+                        &nbsp;{{ cruceros_misma_categoria.0.fareDesc }}
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="main-content" class="container">
+    <div class="mitad1">
+        <div class="row g-2 pt-2">
+            <div class="col-lg-6 col-md-6">
+                <div class="main-image">
+                    {% for crucero in cruceros_misma_categoria %}
+                    {% if crucero2 %}
+                        <li>{{ crucero.fareDesc }}</li>
+                    {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+            <center>
+                <h6 class="title" style="font-size: 1rem; font-weight: 600;">CHOOSE YOUR PACKAGE HERE</h6>
+            </center>
+            <div class="button-container text-center">
+            <form method="get" action="">
+                {% if "ESCAPE TO SEA CRUISE ONLY" in fare_descs %}
+                    <div class="interactive-button {% if request.GET.cruise_only %}selected{% endif %}" id="btn_cruise_only" onclick="submitForm('cruise_only')">
+                        <i class="fas fa-ship"></i>
+                        <span style="font-family: Arial, sans-serif; font-size: .8rem;">Cruise Only</span><br>
+                        <span class="price-package">+ ${{ fare_prices.ESCAPE_TO_SEA_CRUISE_ONLY|floatformat:0 }}</span><br>
+                        <span class="text1">Per person, included taxes & fees.</span>
+                        <div class="container">
+                            <p>
+                                <div class="item-details">
+                                    <p class="" id=""></p>
+                                </div>
+                            </p>
+                        </div>
+                        <button type="button" class="read-more-btn" onclick="openModal(1)">Show detail &nbsp; ></button>
+                    </div>
+                {% elif "FLASH SALE CRUISE ONLY" in fare_descs %}
+                    <div class="interactive-button {% if request.GET.flash_sale_cruise_only %}selected{% endif %}" id="btn_flash_sale_cruise_only" onclick="submitForm('flash_sale_cruise_only')">
+                        <i class="fas fa-ship"></i>
+                        <span style="font-family: Arial, sans-serif; font-size: .8rem;">Flash cruise only</span><br>
+                        <span class="price-package">+ ${{ fare_prices.FLASH_SALE_CRUISE_ONLY|floatformat:0 }}</span><br>
+                        <span class="text1">Per person, included taxes & fees.</span>
+                        <div class="container">
+                            <p>
+                                <div class="item-details">
+                                    <p class="" id=""></p>
+                                </div>
+                            </p>
+                        </div>
+                        <button type="button" class="read-more-btn" onclick="openModal(2)">Show detail &nbsp; ></button>
+                    </div>
+                {% endif %}
+                
+
+                {% for fare_desc in fare_descs %}
+                    {% if fare_desc != "ESCAPE TO SEA CRUISE ONLY" and fare_desc != "FLASH SALE CRUISE ONLY" %}
+                        {% if fare_desc == "DRINKS WIFI OBC INCLUDED" %}
+                            <div class="interactive-button {% if request.GET.wifi_included %}selected{% endif %}" id="btn_wifi_included" onclick="submitForm('wifi_included')">
+                                <i class="fas fa-cocktail"></i><i class="fas fa-wifi"></i>
+                                <span>WiFi & Drinks</span>
+                                <div class="container">
+                                    <p>
+                                        <div class="item-details">
+                                            <p style="font-size: 12px;">{{ primer_item.item_description_long }}</p>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        {% elif fare_desc == "CRUISE WITH DRINKS INCLUDED" %}
+                            <div class="interactive-button {% if request.GET.cruise_with_drinks %}selected{% endif %}" id="btn_cruise_with_drinks" onclick="submitForm('cruise_with_drinks')">
+                                <i class="fas fa-ship"></i><i class="fas fa-wine-glass-alt"></i>
+                                <span style="font-family: Arial, sans-serif; font-size: .8rem;">Cruise With Drinks</span><br>
+                                <span class="price-package">+ ${{ fare_prices.CRUISE_WITH_DRINKS_INCLUDED|floatformat:0 }}</span><br>
+                                <span class="text1">Per person, included taxes & fees.</span>
+                                <div class="container">
+                                    <p>
+                                        <div class="item-details">
+                                            <p class="" id=""></p>
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="read-more-btn" onclick="openModal(3)">Show detail &nbsp; ></button>
+                            </div>
+                        {% elif fare_desc == "WINTER SALE" %}
+                            <div class="interactive-button {% if request.GET.winter_sale %}selected{% endif %}" id="btn_winter_sale" onclick="submitForm('winter_sale')">
+                                <i class="fas fa-ship"></i><i class="fas fa-wine-glass-alt"></i>
+                                <span style="font-family: Arial, sans-serif; font-size: .8rem;">Promotion Winter Sale</span><br>
+                                <span class="price-package">${{ fare_prices.WINTER_SALE|floatformat:0 }}</span><br>
+                                <span class="text1">Per person, included taxes & fees.</span>
+                                <div class="container">
+                                    <p>
+                                        <div class="item-details">
+                                            <p class="" id=""></p>
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="read-more-btn" onclick="openModal(5)">Show detail &nbsp; ></button>
+                            </div>
+                        {% elif fare_desc == "FLASH SALE DRINKS" %}
+                            <div class="interactive-button {% if request.GET.flash_sale_drinks %}selected{% endif %}" id="btn_flash_sale_drinks" onclick="submitForm('flash_sale_drinks')">
+                                <i class="fas fa-ship"></i><i class="fas fa-wine-glass-alt"></i>
+                                <span style="font-family: Arial, sans-serif; font-size: .8rem;">Flash sale drinks</span><br>
+                                <span class="price-package">+ ${{ fare_prices.FLASH_SALE_DRINKS|floatformat:0 }}</span><br>
+                                <span class="text1">Per person, included taxes & fees.</span>
+                                <div class="container">
+                                    <p>
+                                        <div class="item-details">
+                                            <p class="" id=""></p>
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="read-more-btn" onclick="openModal(4)">Show detail &nbsp; ></button>
+                            </div>
+
+                        {% elif fare_desc == "DRINKS AND OBC INCLUDED" %}
+                            <div class="interactive-button {% if request.GET.drinks_and_obc_included %}selected{% endif %}" id="btn_drinks_and_obc_included" onclick="submitForm('drinks_and_obc_included')">
+                                <i class="fas fa-ship"></i><i class="fas fa-wine-glass-alt"></i>
+                                <span style="font-family: Arial, sans-serif; font-size: .8rem;">DRINKS AND OBC INCLUDED</span><br>
+                                <span class="price-package">+ ${{ fare_prices.DRINKS_AND_OBC_INCLUDED|floatformat:0 }}</span><br>
+                                <span class="text1">Per person, included taxes & fees.</span>
+                                <div class="container">
+                                    <p>
+                                        <div class="item-details">
+                                            <p class="" id=""></p>
+                                        </div>
+                                    </p>
+                                </div>
+                                <button type="button" class="read-more-btn" onclick="openModal(4)">Show detail &nbsp; ></button>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                <button type="submit" name="wifi_included" value="true" class="hidden-submit" id="wifi_included"></button>
+                <button type="submit" name="cruise_only" value="true" class="hidden-submit" id="cruise_only"></button>
+                <button type="submit" name="winter_sale" value="true" class="hidden-submit" id="winter_sale"></button>
+                <button type="submit" name="drinks_and_obc_included" value="true" class="hidden-submit" id="drinks_and_obc_included"></button>
+                <button type="submit" name="cruise_with_drinks" value="true" class="hidden-submit" id="cruise_with_drinks"></button>
+                <button type="submit" name="flash_sale_drinks" value="true" class="hidden-submit" id="flash_sale_drinks"></button>
+                <button type="submit" name="flash_sale_cruise_only" value="true" class="hidden-submit" id="flash_sale_cruise_only"></button>
+            </form>
+            <p id="fareDescValue" style="display:none;">{{ crucero1.fareDesc|escapejs }}</p>
+        </div>
+
+
+
+
+
+<div id="main-content" class="container">
+<div class="prueba-container">
+
+<div class="row mitad d-flex flex-nowrap">
+    {% if precio_min_inside %}
+    <div class="col-md-3 flex-shrink-1">
+        <div class="card card-category prueba-card" onclick="mostrarCategoriaPrueba(event, 'inside-prueba')">
+            <div style="text-align: left;" class="card-header">Inside</div>
+
+            <img src="" alt="{{ crucero.shipName }}" id="cabinImage1">
+            <div class="card-body">
+                <p style="font-size: 15px; font-weight: 150;" class="textpersonalize">Compact interior windowless rooms, recommended if you plan to spend most time outside the room.</p>
+            </div>
+            {% if precio_min_inside %}
+            <p style="font-size: 14px; color: black; padding-top: 1px; margin:0px;">
+                {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                {% with total=tax_total|add:precio_min_inside %}
+                {% with total_person=total|divide:total_pasajeros %}
+                 <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>&nbsp;{{ total_pasajeros }}
+                </p>
+                From:<span style="font-size: 18px; font-weight: bold;">${{ total_person   }}</span>
+                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+            </p>
+            {% endif %}
+            {% if precio_min_inside %}
+            <a class="btn btn-primary btn-sm shadow-sm mt-2" style="width: auto; padding-left: 1rem; padding-right: 1rem;">Continue</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if precio_min_oceanview %}
+    <div class="col-md-3 flex-shrink-1">
+        <div class="card card-category prueba-card" onclick="mostrarCategoriaPrueba(event, 'oceanview-prueba')">
+            <div style="text-align: left;" class="card-header">Ocean View</div>
+            <img src="" alt="{{ crucero.shipName }}" id="cabinImage2">
+            <div class="card-body">
+                <p style="font-size: 15px; font-weight: 150;" class="textpersonalize">Cozy exterior rooms with a window, recommended for its natural light and views of the passing scenery.</p>
+            </div>
+            {% if precio_min_oceanview %}
+            <p style="font-size: 14px; color: black; padding-top: 1px; margin:0px;">
+                {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                {% with total=tax_total|add:precio_min_oceanview %}
+                {% with total_person=total|divide:total_pasajeros %}
+                 <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>&nbsp;{{ total_pasajeros }}
+                </p>
+                From:<span style="font-size: 18px; font-weight: bold;">${{ total_person }}</span>
+                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+            </p>
+            {% endif %}
+            {% if precio_min_oceanview %}
+            <a class="btn btn-primary btn-sm shadow-sm mt-2" style="width: auto; padding-left: 1rem; padding-right: 1rem;">Continue</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if precio_min_balcon %}
+    <div class="col-md-3 flex-shrink-1">
+        <div class="card card-category prueba-card" onclick="mostrarCategoriaPrueba(event, 'balcon-prueba')">
+            <div style="text-align: left;" class="card-header">Balcony</div>
+            <img src="" alt="{{ crucero.shipName }}" id="cabinImage3">
+            <div class="card-body">
+                <p style="font-size: 15px; font-weight: 150;" class="textpersonalize">Larger rooms, recommended if you want to unwind in a private outdoor space.</p>
+            </div>
+            {% if precio_min_balcon %}
+            <p style="font-size: 14px; color: black; padding-top: 1px; margin:0px;">
+                {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                {% with total=tax_total|add:precio_min_balcon %}
+                {% with total_person=total|divide:total_pasajeros %}
+                 <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>&nbsp;{{ total_pasajeros }}
+                </p>
+                From:<span style="font-size: 18px; font-weight: bold;">${{ total_person  }}</span>
+                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+            </p>
+            {% endif %}
+            {% if precio_min_balcon %}
+            <a class="btn btn-primary btn-sm shadow-sm mt-2" style="width: auto; padding-left: 1rem; padding-right: 1rem;">Continue</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% if precio_min_suite %}
+    <div class="col-md-3 flex-shrink-1">
+        <div class="card card-category prueba-card" onclick="mostrarCategoriaPrueba(event, 'suite-prueba')">
+            <div style="text-align: left;" class="card-header">Suite</div>
+            <img src="" alt="{{ crucero.shipName }}" id="cabinImage4">
+            <div class="card-body">
+                <p style="font-size: 15px; font-weight: 150;" class="textpersonalize">Luxurious rooms, recommended for its multiple living spaces, exclusive access and services.</p>
+            </div>
+            {% if precio_min_suite %}
+            <p style="font-size: 14px; color: black; padding-top: 1px; margin:0px;">
+                {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                {% with total=tax_total|add:precio_min_suite %}
+                {% with total_person=total|divide:total_pasajeros %}
+                 <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>&nbsp;{{ total_pasajeros }}
+                </p>
+                From:<span style="font-size: 18px; font-weight: bold;">${{ total_person }}</span>
+                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+            </p>
+            {% endif %}
+            {% if precio_min_suite %}
+            <a class="btn btn-primary btn-sm shadow-sm mt-2" style="width: auto; padding-left: 1rem; padding-right: 1rem;">Continue</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="col-md-3 flex-shrink-1">
+        {% if precio_min_yachtclub %}
+        <div class="card card-category prueba-card" onclick="mostrarCategoriaPrueba(event, 'yacht-prueba')">
+            <div style="text-align: left;" class="card-header">Yacht Club</div>
+            <img src="" alt="{{ crucero.shipName }}" id="cabinImage5">
+            <div class="card-body">
+                <p style="font-size: 14px; font-weight: 150;" class="textpersonalize">Luxurious rooms, recommended for its multiple living spaces, exclusive access and services.</p>
+            </div>
+            {% if precio_min_yachtclub %}
+            <p style="font-size: 14px; color: black; padding-top: 1px; margin:0px;">
+                {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                {% with total=tax_total|add:precio_min_yachtclub %}
+                {% with total_person=total|divide:total_pasajeros %}
+                 <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>&nbsp;{{ total_pasajeros }}
+                </p>
+                From:<span style="font-size: 18px; font-weight: bold;">${{ total_person  }}</span>
+                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+            </p>
+            {% endif %}
+            {% if precio_min_yachtclub %}
+            <a class="btn btn-primary btn-sm shadow-sm mt-2" style="width: auto; padding-left: 1rem; padding-right: 1rem;">Continue</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    </div>
+</div>
+
+    <!-- Slide-in Container for Prueba -->
+<div id="slide-in-container-prueba" class="slide-in-container">
+    <div class="header-container d-flex justify-content-between align-items-center">
+        <button id="fixedButton" class="close-btn">
+            &times;<span class="close-text"></span>
+        </button>
+        <h4 class="text-center">Choose Cabin</h4>
+    </div>
+    <div class="container mt-8">
+        <div class="prueba-container">
+
+                <div id="slide-in-body-prueba" class="slide-in-body"></div>
+                <br>
+            <p style="font-size: 14px;">Terms and conditions</p>
+            <p style="font-size: 11px; padding-top:1px; color: black;">
+                * Prices are cruise only, per traveler, including taxes, fees and port expenses and available within last 24 hours.
+                Prices and availability are subject to change and rates are valid for U.S. and Canadian residents only. Cruise lines reserve the right to charge a
+                fuel supplement and any increases in Government taxes,
+                fees and port expenses incurred between date of booking and sailing. See Rules and Restrictions and cruise line general conditions.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="col-md-12 contenedor-cabinas prueba-cabinas" style="display: none;">
+    {% for crucero in grouped_cruceros.I %}
+        {% if crucero|get_attribute:price_variable %}
+            {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                {% if exps.cabin_number %}
+                    <div id="inside-prueba" class="elemento-cabina card">
+                        <a id="cabinLink1" href="#" data-lightbox="gallery2">
+                        {% with crucero.shipName|upper as formattedShipName %}
+                            {% with formattedShipName|url_replace as encodedShipName %}
+                                <img src="{% static 'images/msc_cabinas/'|add:encodedShipName|add:' INTERIOR.jpg' %}" alt="{{ crucero.shipName }}">
+                            {% endwith %}
+                        {% endwith %}
+                        </a>
+                        <div class="card-body">
+                            <p style="font-size: 14px; color: black; padding-left: 5px;">
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if exps %}
+                                        <span class="category-desc" style="font-size: 14px; display:none;" data-category-desc="{{ exps.category_desc|escapejs }}">{{ exps.category_desc }}</span><br>
+                                        <span class="category-name" style="font-size: 14px;"></span><br>
+                                        <span class="category-size" style="font-size: 14px;"></span><br>
+                                        <span class="category-decks" style="font-size: 14px;"></span><br>
+                                        <i class="fas fa-bed custom-icon"></i><span class="selected-cabin-number">{{ exps.cabin_number }}</span><br>
+                                        <hr />
+                                    <center>
+                                            <button class="btn-choice-room" data-cruise-id="{{ crucero.id }}" data-available-cabins="{{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}" style="font-size: .7rem; border: 0px solid #007bff; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 0px; height: 50px; width: 120px;">
+                                                Choose<br> Cabin Available
+                                            </button>
+                                        </center>
+                                    <hr />
+                                    <script type="application/json" id="available-cabins-{{ crucero.id }}">
+                                        {{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}
+                                    </script>
+                                    {% else %}
+                                        <p>No cabinas disponibles para la categoría: {{ crucero.category }}</p>
+                                    {% endif %}
+                                {% endwith %}
+                            </p>
+                            {% with price=crucero|get_attribute:price_variable %}
+                                {% if price %}
+                                    {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                                        {% with total=tax_total|add:price %}
+                                            {% with total_person=total|divide:total_pasajeros %}
+                                                <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                                                      <circle cx="9" cy="7" r="4"></circle>
+                                                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>&nbsp;{{ total_pasajeros }}
+                                                </p>
+                                                <p id="precio_{{ crucero.id }}" style="font-size: 20px; color: black; padding-left: 5px; margin: 0; font-weight: 700;">
+                                                  ${{ total_person  }}
+                                                </p>
+                                                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                                                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% else %}
+                                    <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                                {% endif %}
+                            {% endwith %}
+                            {% if crucero|get_attribute:price_variable %}
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                {% with items=items_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if items %}
+                                        <a class="btn btn-booking" href="/bookingpro/{{ crucero.cruiseID }}/{{price_variable}}/{{ exps.cabin_number }}/{{ crucero.ppdPriceType }}/{{ crucero.fareCode }}/?{% for item in items %}itemcode={{ item.item_code }}&itemtype={{ item.item_type_code }}&packagecode={{ item.package_code }}&category={{ item.category }}{% if not forloop.last %}&{% endif %}{% endfor %}" id="booking-btn-{{ crucero.id }}">Booking</a>
+                                    {% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                            {% endif %}
+                            <br>
+                        </div>
+                    </div>
+                {% else %}
+                    <h1>No cabin available</h1>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+
+    {% for crucero in grouped_cruceros.O %}
+        {% if crucero|get_attribute:price_variable %}
+            {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                {% if exps.cabin_number %}
+                    <div id="oceanview-prueba" class="elemento-cabina card">
+                        <a id="cabinLink2" href="#" data-lightbox="gallery2">
+                        {% with crucero.shipName|upper as formattedShipName %}
+                            {% with formattedShipName|url_replace as encodedShipName %}
+                                <img src="{% static 'images/msc_cabinas/'|add:encodedShipName|add:' OCEANVIEW.jpg' %}" alt="{{ crucero.shipName }}">
+                            {% endwith %}
+                        {% endwith %}
+                        </a>
+                        <div class="card-body">
+                            <p style="font-size: 14px; color: black; padding-left: 5px;">
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if exps %}
+                                        <span class="category-desc" style="font-size: 14px; display:none;" data-category-desc="{{ exps.category_desc|escapejs }}">{{ exps.category_desc }}</span><br>
+                                        <span class="category-name" style="font-size: 14px;"></span><br>
+                                        <span class="category-size" style="font-size: 14px;"></span><br>
+                                        <span class="category-decks" style="font-size: 14px;"></span><br>
+                                        <i class="fas fa-bed custom-icon"></i><span class="selected-cabin-number">{{ exps.cabin_number }}</span><br>
+
+                                        <hr />
+                                        <center>
+                                            <button class="btn-choice-room" data-cruise-id="{{ crucero.id }}" data-available-cabins="{{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}" style="font-size: .7rem; border: 0px solid #007bff; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 0px; height: 50px; width: 120px;">
+                                                Choose<br> Cabin Available
+                                            </button>
+                                        </center>
+                                        <hr />
+                                        <script type="application/json" id="available-cabins-{{ crucero.id }}">
+                                            {{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}
+                                        </script>
+                                    {% else %}
+                                        <p>No cabinas disponibles para la categoría: {{ crucero.category }}</p>
+                                    {% endif %}
+                                {% endwith %}
+                            </p>
+
+                            {% with price=crucero|get_attribute:price_variable %}
+                                {% if price %}
+                                    {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                                        {% with total=tax_total|add:price %}
+                                            {% with total_person=total|divide:total_pasajeros %}
+                                                <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                                      <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                                                      <circle cx="9" cy="7" r="4"></circle>
+                                                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>&nbsp;{{ total_pasajeros }}
+                                                </p>
+                                                <p id="precio_{{ crucero.id }}" style="font-size: 20px; color: black; padding-left: 5px; margin: 0; font-weight: 700;">
+                                                  ${{ total_person  }}
+                                                </p>
+                                                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                                                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% else %}
+                                    <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                                {% endif %}
+                            {% endwith %}
+                            {% if crucero|get_attribute:price_variable %}
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                {% with items=items_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if items %}
+                                        <a class="btn btn-booking" href="/bookingpro/{{ crucero.cruiseID }}/{{price_variable}}/{{ exps.cabin_number }}/{{ crucero.ppdPriceType }}/{{ crucero.fareCode }}/?{% for item in items %}itemcode={{ item.item_code }}&itemtype={{ item.item_type_code }}&packagecode={{ item.package_code }}&category={{ item.category }}{% if not forloop.last %}&{% endif %}{% endfor %}" id="booking-btn-{{ crucero.id }}">Booking</a>
+                                    {% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <h1>No cabin available</h1>
+                {% endif %}
+                <br>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+
+
+
+    {% for crucero in grouped_cruceros.B %}
+        {% if crucero|get_attribute:price_variable %}
+            {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                {% if exps.cabin_number %}
+                    <div id="balcon-prueba" class="elemento-cabina card">
+                        <a id="cabinLink3" href="#" data-lightbox="gallery2">
+                        {% with crucero.shipName|upper as formattedShipName %}
+                            {% with formattedShipName|url_replace as encodedShipName %}
+                                <img src="{% static 'images/msc_cabinas/'|add:encodedShipName|add:' BALCONY.jpg' %}" alt="{{ crucero.shipName }}">
+                            {% endwith %}
+                        {% endwith %}
+                        </a>
+                        <div class="card-body">
+                            <p style="font-size: 14px; color: black; padding-left: 5px;">
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if exps %}
+                                        <span class="category-desc" style="font-size: 14px; display:none;" data-category-desc="{{ exps.category_desc|escapejs }}">{{ exps.category_desc }}</span><br>
+                                        <span class="category-name" style="font-size: 14px;"></span><br>
+                                        <span class="category-size" style="font-size: 14px;"></span><br>
+                                        <span class="category-decks" style="font-size: 14px;"></span><br>
+                                        <i class="fas fa-bed custom-icon"></i><span class="selected-cabin-number">{{ exps.cabin_number }}</span><br>
+
+                                        <hr />
+                                        <center>
+                                            <button class="btn-choice-room" data-cruise-id="{{ crucero.id }}" data-available-cabins="{{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}" style="font-size: .7rem; border: 0px solid #007bff; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 0px; height: 50px; width: 120px;">
+                                                Choose<br> Cabin Available
+                                            </button>
+                                        </center>
+                                        <hr />
+                                        <script type="application/json" id="available-cabins-{{ crucero.id }}">
+                                            {{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}
+                                        </script>
+                                    {% else %}
+                                        <p>No cabinas disponibles para la categoría: {{ crucero.category }}</p>
+                                    {% endif %}
+                                {% endwith %}
+                            </p>
+
+                            {% with price=crucero|get_attribute:price_variable %}
+                                {% if price %}
+                                    {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                                        {% with total=tax_total|add:price %}
+                                            {% with total_person=total|divide:total_pasajeros %}
+                                                <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>&nbsp;{{ total_pasajeros }}
+                                                </p>
+                                                <p id="precio_{{ crucero.id }}" style="font-size: 20px; color: black; padding-left: 5px; margin: 0; font-weight: 700;">
+                                                    ${{ total_person  }}
+                                                </p>
+                                                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                                                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% else %}
+                                    <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                                {% endif %}
+                            {% endwith %}
+
+                            {% if crucero|get_attribute:price_variable %}
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                {% with items=items_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if items and exps.cabin_number %}
+                                        <a class="btn btn-booking" href="/bookingpro/{{ crucero.cruiseID }}/{{price_variable}}/{{ exps.cabin_number }}/{{ crucero.ppdPriceType }}/{{ crucero.fareCode }}/?{% for item in items %}itemcode={{ item.item_code }}&itemtype={{ item.item_type_code }}&packagecode={{ item.package_code }}&category={{ item.category }}{% if not forloop.last %}&{% endif %}{% endfor %}" id="booking-btn-{{ crucero.id }}">Booking</a>
+                                    {% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <h1>No cabin available</h1>
+                {% endif %}
+            {% endwith %}
+            <br>
+        {% endif %}
+    {% endfor %}
+
+
+    {% for crucero in grouped_cruceros.S %}
+        {% if crucero|get_attribute:price_variable %}
+            {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                {% if exps.cabin_number %}
+                    <div id="suite-prueba" class="elemento-cabina card">
+                        <a id="cabinLink4" href="#" data-lightbox="gallery2">
+                        {% with crucero.shipName|upper as formattedShipName %}
+                            {% with formattedShipName|url_replace as encodedShipName %}
+                                <img src="{% static 'images/msc_cabinas/'|add:encodedShipName|add:' SUITE.jpg' %}" alt="{{ crucero.shipName }}">
+                            {% endwith %}
+                        {% endwith %}
+                        </a>
+                        <div class="card-body">
+                            <p style="font-size: 14px; color: black; padding-left: 5px;">
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if exps %}
+                                        <span class="category-desc" style="font-size: 14px; display:none;" data-category-desc="{{ exps.category_desc|escapejs }}">{{ exps.category_desc }}</span><br>
+                                        <span class="category-name" style="font-size: 14px;"></span><br>
+                                        <span class="category-size" style="font-size: 14px;"></span><br>
+                                        <span class="category-decks" style="font-size: 14px;"></span><br>
+                                        <i class="fas fa-bed custom-icon"></i><span class="selected-cabin-number">{{ exps.cabin_number }}</span><br>
+
+                                        <hr />
+                                        <center>
+                                            <button class="btn-choice-room" data-cruise-id="{{ crucero.id }}" data-available-cabins="{{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}" style="font-size: .7rem; border: 0px solid #007bff; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 0px; height: 50px; width: 120px;">
+                                                Choose<br> Cabin Available
+                                            </button>
+                                        </center>
+                                        <hr />
+                                        <script type="application/json" id="available-cabins-{{ crucero.id }}">
+                                            {{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}
+                                        </script>
+                                    {% else %}
+                                        <p>No cabinas disponibles para la categoría: {{ crucero.category }}</p>
+                                    {% endif %}
+                                {% endwith %}
+                            </p>
+
+                            {% with price=crucero|get_attribute:price_variable %}
+                                {% if price %}
+                                    {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                                        {% with total=tax_total|add:price %}
+                                            {% with total_person=total|divide:total_pasajeros %}
+                                                <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>&nbsp;{{ total_pasajeros }}
+                                                </p>
+                                                <p id="precio_{{ crucero.id }}" style="font-size: 20px; color: black; padding-left: 5px; margin: 0; font-weight: 700;">
+                                                    ${{ total_person  }}
+                                                </p>
+                                                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                                                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% else %}
+                                    <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                                {% endif %}
+                            {% endwith %}
+
+                            {% if crucero|get_attribute:price_variable %}
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                {% with items=items_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if items and exps.cabin_number %}
+                                        <a class="btn btn-booking" href="/bookingpro/{{ crucero.cruiseID }}/{{price_variable}}/{{ exps.cabin_number }}/{{ crucero.ppdPriceType }}/{{ crucero.fareCode }}/?{% for item in items %}itemcode={{ item.item_code }}&itemtype={{ item.item_type_code }}&packagecode={{ item.package_code }}&category={{ item.category }}{% if not forloop.last %}&{% endif %}{% endfor %}" id="booking-btn-{{ crucero.id }}">Booking</a>
+                                    {% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <h1>No cabin available</h1>
+                {% endif %}
+                <br>
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+
+
+    {% for crucero in grouped_cruceros.Y %}
+        {% if crucero|get_attribute:price_variable %}
+            {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                {% if exps.cabin_number %}
+                    <div id="yacht-prueba" class="elemento-cabina card">
+                        <a id="cabinLink5" href="#" data-lightbox="gallery2">
+                        {% with crucero.shipName|upper as formattedShipName %}
+                            {% with formattedShipName|url_replace as encodedShipName %}
+                                <img src="{% static 'images/msc_cabinas/'|add:encodedShipName|add:' YACHTCLUB.jpg' %}" alt="{{ crucero.shipName }}">
+                            {% endwith %}
+                        {% endwith %}
+                        </a>
+                        <div class="card-body">
+                            <p style="font-size: 14px; color: black; padding-left: 5px;">
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if exps %}
+                                        <span class="category-desc" style="font-size: 14px; display:none;" data-category-desc="{{ exps.category_desc|escapejs }}">{{ exps.category_desc }}</span><br>
+                                        <span class="category-name" style="font-size: 14px;"></span><br>
+                                        <span class="category-size" style="font-size: 14px;"></span><br>
+                                        <span class="category-decks" style="font-size: 14px;"></span><br>
+                                        <i class="fas fa-bed custom-icon"></i><span class="selected-cabin-number">{{ exps.cabin_number }}</span><br>
+
+                                        <hr />
+                                        <center>
+                                            <button class="btn-choice-room" data-cruise-id="{{ crucero.id }}" data-available-cabins="{{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}" style="font-size: .7rem; border: 0px solid #007bff; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 0px; height: 50px; width: 120px;">
+                                                Choose<br> Cabin Available
+                                            </button>
+                                        </center>
+                                        <hr />
+                                        <script type="application/json" id="available-cabins-{{ crucero.id }}">
+                                            {{ experiencia_por_categoria_json|get_item:crucero.categoria_extraida|safe }}
+                                        </script>
+                                    {% else %}
+                                        <p>No cabinas disponibles para la categoría: {{ crucero.category }}</p>
+                                    {% endif %}
+                                {% endwith %}
+                            </p>
+
+                            {% with price=crucero|get_attribute:price_variable %}
+                                {% if price %}
+                                    {% with tax_total=total_pasajeros|multiply:all_attributes.gftA %}
+                                        {% with total=tax_total|add:price %}
+                                            {% with total_person=total|divide:total_pasajeros %}
+                                                <p style="font-size: 16px; color: black; padding-left: 5px; padding-bottom:1px; margin-bottom: 1px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>&nbsp;{{ total_pasajeros }}
+                                                </p>
+                                                <p id="precio_{{ crucero.id }}" style="font-size: 20px; color: black; padding-left: 5px; margin: 0; font-weight: 700;">
+                                                    ${{ total_person  }}
+                                                </p>
+                                                <p style="font-size: 12px; margin: 0; padding-left: 5px; font-weight: 400;">Per Person</p>
+                                                <p style="font-size: 10px; margin: 0; padding-left: 5px; font-weight: 400;">Tax & Fees Included</p>
+                                            {% endwith %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% else %}
+                                    <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                                {% endif %}
+                            {% endwith %}
+
+                            {% if crucero|get_attribute:price_variable %}
+                                {% with exps=experiencia_por_categoria|get_item:crucero.categoria_extraida %}
+                                {% with items=items_por_categoria|get_item:crucero.categoria_extraida %}
+                                    {% if items and exps.cabin_number %}
+                                        <a class="btn btn-booking" href="/bookingpro/{{ crucero.cruiseID }}/{{price_variable}}/{{ exps.cabin_number }}/{{ crucero.ppdPriceType }}/{{ crucero.fareCode }}/?{% for item in items %}itemcode={{ item.item_code }}&itemtype={{ item.item_type_code }}&packagecode={{ item.package_code }}&category={{ item.category }}{% if not forloop.last %}&{% endif %}{% endfor %}" id="booking-btn-{{ crucero.id }}">Booking</a>
+                                    {% endif %}
+                                {% endwith %}
+                                {% endwith %}
+                            {% else %}
+                                <a class="btn btn-booking disabled" style="pointer-events: none; color: gray;">Not Available</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <h1>No cabin available</h1>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+<!-- Modal -->
+<div id="cabinModal" class="modal">
+    <div class="modal-content">
+        <div class="header-container d-flex justify-content-between align-items-center">
+            <button class="close">
+                &times;<span class="close-text"></span>
+            </button>
+            <h4 class="text-center">Select Cabin</h4>
+        </div>
+            <div id="available-cabins-list"></div>
+    </div>
+</div>
+
+<div class="mitad">
+  <div class="container mt-5">
+    <div class="row g-12 pt-12">
+        <div class="col-lg-8 col-md-12">
+            <h1 class="title">Itinerary</h1>
+        </div>
+        <div class="col-lg-6 order-lg-1 order-2">
+            <div class="itinerary-container">
+                {% if itinerario_reorganizado %}
+
+                    {% for i in itinerario_reorganizado %}
+
+                            <span><strong><i class="fas fa-sun" style="font-size: 18px; color: rgb(77, 76, 76);"></i>&nbsp; Day {{ i.dia }}</strong></span><br>
+                            <span><i class="fas fa-map-marker-alt" style="font-size: 18px; color: rgb(53, 52, 52);"></i>&nbsp;{{ i.port_name }}</span><br>
+                            {% if i.time %}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path d="M12 1.75A10.25 10.25 0 1 0 22.25 12A10.25 10.25 0 0 0 12 1.75zM12 20.5a8.5 8.5 0 1 1 8.5-8.5a8.51 8.51 0 0 1-8.5 8.5z" fill="black"/>
+                                <path d="M12.75 7h-1.5v6.25l5.5 3.3l.75-1.23l-4.75-2.82z" fill="black"/>
+                              </svg>
+                            {% else %}
+                            {% endif %}
+                            <span class="formatted-time">{{ i.time }}</span>
+                            <hr />
+
+                    {% endfor %}
+
+            {% endif %}
+        </div>
+    </div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const verMasBtn = document.getElementById('ver-mas');
+    if (verMasBtn) {
+        verMasBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const hiddenRows = document.querySelectorAll('tr[style*="display: none;"]');
+            hiddenRows.forEach(row => {
+                row.style.display = 'table-row';
+            });
+            this.style.display = 'none';
+        });
+    }
+});
+</script>
+
+        <div class="col-lg-6 order-lg-2 order-1">
+            <div class="main-image">
+                <a href="{{ imagen.imagen1.url }}" data-lightbox="gallery1">
+                    <img src="https://www.msccrociere.it/images/msc/iti/itin/{{crucero.itinCd}}.jpg" alt="{{ imagen.nombre }}">
+                </a>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </div>
+    <div class="mitad">
+    <p>
+    <h5 style="color: #000;">Included in the cost of your cruise:</h5>
+    <br>
+    <ul>
+        <li>
+            <span><i class="fas fa-utensils"></i> <span class="text">Dining</span></span><br>
+            Main dining, buffet meals, and snacks
+        </li>
+        <li>
+            <span><i class="fas fa-child"></i> <span class="text">Youth programs</span></span><br>
+            Ages 3-17
+        </li>
+        <li>
+            <span><i class="fas fa-coffee"></i> <span class="text">Drinks Non Alcoholic</span></span><br>
+            Water and non-specialty coffee and tea
+        </li>
+        <li>
+            <span><i class="fas fa-dumbbell"></i> <span class="text">Fitness facilities</span></span><br>
+            Cardio and exercise equipment
+        </li>
+        <li>
+            <span><i class="fas fa-theater-masks"></i> <span class="text">Onboard entertainment</span></span><br>
+            Broadway-style shows and live music
+        </li>
+    </ul>
+    </div>
+    <div class="mitad">
+    <br>
+    <h5 style="color: #000;">Purchase these individually or choose an offer that includes them:</h5>
+    <br>
+    <ul>
+        <li>
+            <span><i class="fas fa-glass-cheers"></i> <span class="text">Alcoholic drinks</span></span><br>
+            Beer, wine, and spirits
+        </li>
+        <li>
+            <span><i class="fas fa-wifi"></i> <span class="text">WiFi</span></span><br>
+            Stay connected on board
+        </li>
+        <li>
+            <span><i class="fas fa-mug-hot"></i> <span class="text">Specialty drinks</span></span><br>
+            Specialty coffee and tea, soft drinks, juice, and bottled water
+        </li>
+        <li>
+            <span><i class="fas fa-spa"></i> <span class="text">Spa treatments</span></span><br>
+            Massages and wellness treatments
+        </li>
+        <li>
+            <span><i class="fas fa-running"></i> <span class="text">Fitness classes</span></span><br>
+            Variety of instructor-led exercise sessions
+        </li>
+        <li>
+            <span><i class="fas fa-hand-holding-usd"></i> <span class="text">Gratuities</span></span><br>
+            From $12 - $18 USD per person per day
+        </li>
+        <li>
+            <span><i class="fas fa-utensils"></i> <span class="text">Specialty dining</span></span><br>
+            À la carte restaurants, lounges, and cafes
+        </li>
+        <li>
+            <span><i class="fas fa-ship"></i> <span class="text">Shore excursions</span></span><br>
+            Immersive port of call experiences
+        </li>
+        <li>
+            <span><i class="fas fa-tshirt"></i> <span class="text">Laundry services</span></span><br>
+            Wash and press amenities
+        </li>
+    </ul>
+</p>
+
+
+    </div>
+    <div class="mitad">
+        <p class="text-primary" style="color: #888; font-size: 1rem;">Cruise line cancellation policy</p>
+        <p style="font-size: 14px;" class="text-dark">
+                * Prices are cruise only, per traveler, including taxes, fees and port expenses and available within the last 24 hours. Prices and availability are subject to change and rates are valid for U.S.
+                and Canadian residents only. Cruise lines reserve the right to charge a fuel supplement and any increases in Government taxes, fees and port expenses incurred between date of booking and sailing.
+                See Rules and Restrictions and cruise line general conditions. <a href="{% static 'terms_conditions/msc_terminos.pdf' %}" target="_blank">here</a>.
+        </p>
+    </div>
+</div>
+
+</div>
+
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <p id="modal-text"></p>
+    </div>
+</div>
+
+
+<script>
+    function getMainShipImageUrl(shipName) {
+        const formattedName = shipName.toUpperCase().replace(/ /g, '%20');
+        return `/static/images/ships/${formattedName}.jpg`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const shipName = "{{ crucero.shipName }}";
+        const shipImageUrl = getMainShipImageUrl(shipName);
+
+        const imgElement = document.getElementById('shipImage');
+        if (imgElement) {
+            imgElement.src = shipImageUrl;
+            imgElement.alt = shipName;
+
+            const aElement = imgElement.parentNode;
+            if (aElement) {
+                aElement.href = shipImageUrl;
+            }
+        }
+    });
+</script>
+
+<script>
+    function getGalleryShipImageUrl(shipName, index) {
+        const formattedName = shipName.toUpperCase().replace(/ /g, '%20');
+        return `/static/images/ships_galery/${formattedName}${index}.jpg`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const shipName = "{{ crucero.shipName }}";
+
+        for (let i = 1; i <= 4; i++) {
+            const shipImageUrl = getGalleryShipImageUrl(shipName, i);
+
+            const imgElement = document.getElementById(`shipImage${i}`);
+            if (imgElement) {
+                imgElement.src = shipImageUrl;
+                imgElement.alt = `${shipName} ${i}`;
+
+                const aElement = imgElement.parentNode;
+                if (aElement) {
+                    aElement.href = shipImageUrl;
+                }
+            }
+        }
+    });
+</script>
+
+
+
+
+<script>
+    function getCabinImageUrl(shipName, cabinType) {
+        const formattedName = shipName.toUpperCase().replace(/ /g, '%20');
+        const formattedCabinType = cabinType.toUpperCase().replace(/ /g, '%20');
+        return `/static/images/msc_cabinas/${formattedName} ${formattedCabinType}.jpg`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const shipName = "{{ crucero.shipName }}";
+        const cabinTypes = ['INTERIOR', 'OCEANVIEW', 'BALCONY', 'SUITE', 'YACHTCLUB'];
+
+        cabinTypes.forEach((cabinType, index) => {
+            const cabinImageUrl = getCabinImageUrl(shipName, cabinType);
+
+            const imgElement = document.getElementById(`cabinImage${index + 1}`);
+            const aElement = document.getElementById(`cabinLink${index + 1}`);
+
+            if (imgElement) {
+                imgElement.src = cabinImageUrl;
+                imgElement.alt = `${shipName} ${cabinType}`;
+            }
+
+            if (aElement) {
+                aElement.href = cabinImageUrl;
+                aElement.dataset.lightbox = "gallery2";
+            }
+        });
+    });
+</script>
+
+
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const slideInContainerPrueba = document.getElementById('slide-in-container-prueba');
+    const closeBtnPrueba = slideInContainerPrueba.querySelector('.close-btn');
+
+    closeBtnPrueba.addEventListener('click', function() {
+        slideInContainerPrueba.classList.remove('slide-in-open');
+    });
+
+    window.mostrarCategoriaPrueba = function(event, categoria) {
+        event.preventDefault();
+        const elementos = document.querySelectorAll('.prueba-cabinas .elemento-cabina');
+        const slideInBodyPrueba = document.getElementById('slide-in-body-prueba');
+        slideInBodyPrueba.innerHTML = '';
+
+        const slideInContentInner = document.createElement('div');
+        slideInContentInner.className = 'slide-in-content-inner';
+
+        elementos.forEach(function(elemento) {
+            if (elemento.id === categoria) {
+                slideInContentInner.appendChild(elemento.cloneNode(true));
+            }
+        });
+
+        slideInBodyPrueba.appendChild(slideInContentInner);
+        slideInContainerPrueba.classList.add('slide-in-open');
+    };
+});
+
+</script>
+
+
+
+<script>
+     $(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+
+<script>
+    function showInfo(event) {
+    event.stopPropagation();
+    const infoBox = document.getElementById('info-box');
+    infoBox.style.display = infoBox.style.display === 'none' ? 'block' : 'none';
+}
+
+</script>
+
+<script>
+function openModal(id) {
+    event.stopPropagation();
+    const modal = document.getElementById("myModal");
+    const modalText = document.getElementById("modal-text");
+
+    switch(id) {
+        case 1:
+            modalText.innerHTML = `
+                <div class="modal-content-wrapper">
+                    <p><strong>Full board available in buffet and main restaurant:</strong></p>
+                    <p>
+                        <li>
+                            24-hour room service (free delivery), Free continental breakfast in stateroom (free delivery)
+                        </li>
+                        <li>
+                            Broadway-style theater shows, Pool area, Kids club and activities.
+                        </li>
+                        <li>
+                            Fitness center free access (from 14 years), Sport facilities, Entertainment activities.
+                        </li>
+                        <li>
+                            MSC for Me (where available), MSC Voyagers Club points, Discounted packages offer.
+                        </li>
+                    </p>
+                    <p><a href="https://thatvacation.com/static/terms_conditions/msc_terminos.pdf" target="_blank">Cruise Lines Cancelations Policy</a></p>
+                    <p><a href="{% static 'msc_deals_promo/ESCAPE_TO_SEA_CRUISE_ONLY.pdf' %}" target="_blank">Terms & Conditions</a></p>
+                    <div class="mitad">
+                        <p>
+                        <h5 style="color: #000;">Already included with any package</h5>
+                        <br>
+                        <ul>
+                            <li>
+                                <span><i class="fas fa-utensils"></i> <span class="text">Dining</span></span><br>
+                                Main dining, buffet meals, and snacks
+                            </li>
+                            <li>
+                                <span><i class="fas fa-child"></i> <span class="text">Youth programs</span></span><br>
+                                Ages 3-17
+                            </li>
+                            <li>
+                                <span><i class="fas fa-coffee"></i> <span class="text">Drinks Non Alcoholic</span></span><br>
+                                Water and non-specialty coffee and tea
+                            </li>
+                            <li>
+                                <span><i class="fas fa-dumbbell"></i> <span class="text">Fitness facilities</span></span><br>
+                                Cardio and exercise equipment
+                            </li>
+                            <li>
+                                <span><i class="fas fa-theater-masks"></i> <span class="text">Onboard entertainment</span></span><br>
+                                Broadway-style shows and live music
+                            </li>
+                        </ul>
+                    </div>
+                </div>`;
+            break;
+        case 2:
+            modalText.innerHTML = `
+                <div class="modal-content-wrapper">
+                    <p><strong>Full board available in buffet and main restaurant:</strong></p>
+                    <p>
+                        <li>
+                            Free continental breakfast in stateroom (delivery for a fee).
+                        </li>
+                        <li>
+                            Broadway-style theater shows.
+                        </li>
+                        <li>
+                            Pool area, Kids club and activities.
+                        </li>
+                        <li>
+                            Fitness center free access (from 14 years), Sport facilities, Entertainment activities,<br>
+                            MSC for Me app (where available), MSC Voyagers Club points.
+                        </li>
+                    </p>
+                    <p><a href="https://thatvacation.com/static/terms_conditions/msc_terminos.pdf" target="_blank">Cruise Lines Cancelations Policy</a></p>
+                    <p><a href="{% static 'msc_deals_promo/FLASH_SALE_CRUISE_ONLY.pdf' %}" target="_blank">Terms & Conditions</a></p>
+                    <div class="mitad">
+                        <p>
+                        <h5 style="color: #000;">Already included with any package</h5>
+                        <br>
+                        <ul>
+                            <li>
+                                <span><i class="fas fa-utensils"></i> <span class="text">Dining</span></span><br>
+                                Main dining, buffet meals, and snacks
+                            </li>
+                            <li>
+                                <span><i class="fas fa-child"></i> <span class="text">Youth programs</span></span><br>
+                                Ages 3-17
+                            </li>
+                            <li>
+                                <span><i class="fas fa-coffee"></i> <span class="text">Drinks Non Alcoholic</span></span><br>
+                                Water and non-specialty coffee and tea
+                            </li>
+                            <li>
+                                <span><i class="fas fa-dumbbell"></i> <span class="text">Fitness facilities</span></span><br>
+                                Cardio and exercise equipment
+                            </li>
+                            <li>
+                                <span><i class="fas fa-theater-masks"></i> <span class="text">Onboard entertainment</span></span><br>
+                                Broadway-style shows and live music
+                            </li>
+                        </ul>
+                    </div>
+                </div>`;
+            break;
+        case 3:
+            modalText.innerHTML = `
+                <div class="modal-content-wrapper">
+                    <p><strong>Easy Plus Package:</strong></p>
+                    <p>
+                        <li>
+                            Includes all beverages priced up to 9 euro / 10 dollars.
+                        </li>
+                        <li>
+                            Choice of frozen and classic cocktails, fresh fruit cocktails, protein shakes, well spirits.
+                        </li>
+                        <li>
+                            Liqueurs and cordials,
+                            draught and bottled beers, non-alcoholic cocktails, bottled mineral water, hot drinks.
+                        </li>
+                        <li>
+                            10% discount on bottles of wine purchased on board, wines by the glass and beverage gratuity.
+                        </li>
+                    </p>
+                    <p><a href="https://thatvacation.com/static/terms_conditions/msc_terminos.pdf" target="_blank">Cruise Lines Cancelations Policy</a></p>
+                    <p><a href="{% static 'msc_deals_promo/CRUISE_WITH_DRINKS.pdf' %}" target="_blank">Terms & Conditions</a></p>
+                    <div class="mitad">
+                        <p>
+                        <h5 style="color: #000;">Already included with any package</h5>
+                        <br>
+                        <ul>
+                            <li>
+                                <span><i class="fas fa-utensils"></i> <span class="text">Dining</span></span><br>
+                                Main dining, buffet meals, and snacks
+                            </li>
+                            <li>
+                                <span><i class="fas fa-child"></i> <span class="text">Youth programs</span></span><br>
+                                Ages 3-17
+                            </li>
+                            <li>
+                                <span><i class="fas fa-coffee"></i> <span class="text">Drinks Non Alcoholic</span></span><br>
+                                Water and non-specialty coffee and tea
+                            </li>
+                            <li>
+                                <span><i class="fas fa-dumbbell"></i> <span class="text">Fitness facilities</span></span><br>
+                                Cardio and exercise equipment
+                            </li>
+                            <li>
+                                <span><i class="fas fa-theater-masks"></i> <span class="text">Onboard entertainment</span></span><br>
+                                Broadway-style shows and live music
+                            </li>
+                        </ul>
+                    </div>
+                </div>`;
+            break;
+        case 4:
+            modalText.innerHTML = `
+                <div class="modal-content-wrapper">
+                    <p><strong>Flash Sale Drinks Package:</strong></p>
+                    <p>
+                        <li>
+                            Includes all beverages priced up to 9 euro / 10 dollars.
+                        </li>
+                        <li>
+                            Choice of frozen and classic cocktails, fresh fruit cocktails, protein shakes, well spirits.
+                        </li>
+                        <li>
+                            Liqueurs and cordials,
+                            draught and bottled beers, non-alcoholic cocktails, bottled mineral water, hot drinks.
+                        </li>
+                        <li>
+                            10% discount on bottles of wine purchased on board, wines by the glass and beverage gratuity.
+                        </li>
+                    </p>
+                    <p><a href="https://thatvacation.com/static/terms_conditions/msc_terminos.pdf" target="_blank">Cruise Lines Cancelations Policy</a></p>
+                    <p><a href="{% static 'msc_deals_promo/CRUISE_WITH_DRINKS.pdf' %}" target="_blank">Terms & Conditions</a></p>
+                    <div class="mitad">
+                        <p>
+                        <h5 style="color: #000;">Already included with any package</h5>
+                        <br>
+                        <ul>
+                            <li>
+                                <span><i class="fas fa-utensils"></i> <span class="text">Dining</span></span><br>
+                                Main dining, buffet meals, and snacks
+                            </li>
+                            <li>
+                                <span><i class="fas fa-child"></i> <span class="text">Youth programs</span></span><br>
+                                Ages 3-17
+                            </li>
+                            <li>
+                                <span><i class="fas fa-coffee"></i> <span class="text">Drinks Non Alcoholic</span></span><br>
+                                Water and non-specialty coffee and tea
+                            </li>
+                            <li>
+                                <span><i class="fas fa-dumbbell"></i> <span class="text">Fitness facilities</span></span><br>
+                                Cardio and exercise equipment
+                            </li>
+                            <li>
+                                <span><i class="fas fa-theater-masks"></i> <span class="text">Onboard entertainment</span></span><br>
+                                Broadway-style shows and live music
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>`;
+            break;
+            case 5:
+            modalText.innerHTML = `
+                <div class="modal-content-wrapper">
+                    <p><strong>Pakcage Promotional Winter Sale:</strong></p>
+                    <p>
+                        <li>
+                             Rates are per person based on double occupancy and quoted in USD. Up to $700 off per stateroom based on double occupancy for select sailings; <br> MSC Yacht Club staterooms are excluded from the promotional discount.
+                        </li>
+                        <li>
+                            Offer is valid for U.S. residents only and on new bookings only. Subject to availability while supplies last. 
+                        </li>
+                       
+                    </p>
+                    <p>
+                    <span style="color: red;">NOTE:&nbsp;</span>This is an offer, if you apply for another package, you lose this promotional offer.
+                    
+                        
+                    </p>
+                    <p><a href="https://thatvacation.com/static/terms_conditions/msc_terminos.pdf" target="_blank">Cruise Lines Cancelations Policy</a></p>
+                    <p><a href="{% static 'msc_deals_promo/CRUISE_WITH_DRINKS.pdf' %}" target="_blank">Terms & Conditions</a></p>
+                    <div class="mitad">
+                        <p>
+                        <h5 style="color: #000;">Already included with any package</h5>
+                        <br>
+                        <ul>
+                            <li>
+                                <span><i class="fas fa-utensils"></i> <span class="text">Dining</span></span><br>
+                                Main dining, buffet meals, and snacks
+                            </li>
+                            <li>
+                                <span><i class="fas fa-child"></i> <span class="text">Youth programs</span></span><br>
+                                Ages 3-17
+                            </li>
+                            <li>
+                                <span><i class="fas fa-coffee"></i> <span class="text">Drinks Non Alcoholic</span></span><br>
+                                Water and non-specialty coffee and tea
+                            </li>
+                            <li>
+                                <span><i class="fas fa-dumbbell"></i> <span class="text">Fitness facilities</span></span><br>
+                                Cardio and exercise equipment
+                            </li>
+                            <li>
+                                <span><i class="fas fa-theater-masks"></i> <span class="text">Onboard entertainment</span></span><br>
+                                Broadway-style shows and live music
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>`;
+            break;
+        default:
+            modalText.innerHTML = `<div><p>Ventana desconocida.</p></div>`;
+    }
+
+    modal.style.display = "block";
+}
+
+document.getElementById("close-modal").onclick = function() {
+    const modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+
+window.onclick = function(event) {
+    const modal = document.getElementById("myModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+
+<script src="{% static '/js/detalles_cabinas_card.js' %}"></script>
+<script src="{% static '/js/seleccion_slide.js' %}"></script>
+<script src="{% static '/js/experience_lowercase_items.js' %}"></script>
+<script src="{% static '/js/categories.js' %}"></script>
+<script src="{% static '/js/fixed_buton_close_experience.js' %}"></script>
+
+
+
+
+{% endblock %}
+

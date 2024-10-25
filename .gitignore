@@ -1,0 +1,17 @@
+settings.py
+wsgi.py
+
+
+*.csv
+*.zip
+/json/
+/csv/
+
+env/
+thatvacation/thatvacationtravel-.git/
+thatvacation/thatvacationtravel-mirror/
+
+json/
+csv/
+__pycache__/
+*.pyc

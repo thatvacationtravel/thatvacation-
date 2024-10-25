@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Listado destinatarios</title>
+</head>
+<body>
+    <h1>Correos Encontrados</h1>
+    <br>
+    <ul>
+        {% for correo in correos %}
+  {{ correo }},<br>
+{% endfor %}
+<a href="/send_mail">enviar</a>
+    </ul>
+</body>
+</html>

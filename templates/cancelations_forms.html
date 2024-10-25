@@ -1,0 +1,87 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            height: auto;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        textarea {
+            height: 100px;
+            resize: none;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .error {
+            color: red;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cancel Booking</h1>
+    <div class="form-container">
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <label for="booking_no">Booking Number:</label>
+            <input type="text" id="booking_no" name="booking_no" required placeholder="Enter Booking Number">
+
+            <label for="booking_note">Booking Note:</label>
+            <textarea id="booking_note" name="booking_note" required placeholder="Enter Booking Note"></textarea>
+
+            <button type="submit">Submit Cancel</button>
+        </form>
+    </div>
+</div>
+</body>
+
+{% endblock %}
+</div>
+</div>
+</div>
+
+</html>
